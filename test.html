@@ -1,0 +1,603 @@
+<html>
+
+      <head>
+           <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <style>
+         
+         body { 
+             margin: 0;
+             padding: 0; 
+             font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+             font-size: 16px;
+         
+         }
+          #dams { 
+        margin-left: auto;
+        margin-right: auto;
+        min-height: 100px;
+  
+        width: 98%;
+        max-width: 800px;
+         }
+         
+          .tooltip { 
+        background: #474747;
+        color: #fff;
+        border: solid 1px #eee;
+        border-radius: 5px;
+        min-width: 100px;
+        padding: 10px;
+        font-size: 70%;
+        position: absolute; 
+        z-index: 200;
+        visibility: hidden;
+        
+    }
+         
+         
+          .damnav { 
+           margin-top: 10px;
+              margin-left: 15px;
+              margin-bottom: 20px;
+           float: left;
+           width: 100%;
+           
+           
+       }
+       .dam { 
+           float: left;
+           padding: 5px 8px;
+           border: solid 1px gray;
+           font-size: 110%;
+           color:gray;
+           margin-right: 3%;
+           border-radius: 5px;
+           
+           
+       }
+       
+       .dam:hover { 
+           cursor: pointer; cursor: hand; 
+           background: #474747;
+           color: #fff;
+       }
+         
+                .head { 
+           font-weight: bold;
+/*           font-size: 110%;*/
+           color: #828282;
+       }
+       .dams1 {
+           
+           width: 90%;
+           font-size: 90%;
+           line-height: 130%;
+           color: #828282;
+           margin-left: 15px;
+       }
+         
+         .provlegendtext {
+             fill: #000;
+             font-size: 70%;
+             font-weight: normal;
+             
+         }
+         
+         
+         
+         @media screen and (min-width: 800px) { 
+             body { 
+                 
+             }
+             
+             .dam { 
+                 font-size: 70%;
+                 }
+             
+             .dams1 { 
+                 font-size: 90%;
+             }
+         
+         }
+         
+    
+          </style>
+      </head>
+
+  <body>
+  <div class="tooltip">Tooltip</div>
+  <div id="dams">
+      <div class="damnav">
+        <div class="dam one">1</div>
+        <div class="dam two">2</div>
+        <div class="dam three">3</div>
+        <div class="dam four">4</div>
+    </div>
+    <div class='dams1'></div>
+  </div>
+
+  
+  
+  <script src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/jquery.min.js"></script>
+  <script src="../lib/queue.v1.min.js"></script>
+  <script>
+      
+  var colors = ["#93d8a5",
+"#e9acd3",
+"#64dcd8",
+"#eead84",
+"#8ad1e9",
+"#c4c381",
+"#b6bde5",
+"#e0ebaa",
+"#dfc3b3",
+"#b2d5c3"];    
+      
+      
+      var width = $("#dams").width();
+      
+     
+      
+      var dams_svg = d3.select("#dams")
+        .append("svg")
+        .attr("width", width)
+        
+      
+      var format = d3.format(',');
+    
+      var tooltip = d3.select(".tooltip");
+    
+      var annotation = dams_svg.append("g"); 
+      
+      
+      
+      function main(error, dams, provinces, dams_by_size, dams_by_alpha) { 
+            
+            
+            
+            provinces.forEach( function (d) { 
+                d.fsc = +d.fsc;
+            })
+            
+            var provincesNoTotal = provinces.filter( function (d) { return d.province !== "Total"; })
+            
+            
+            
+            dams.forEach( function (d) { 
+                d.FSC = +d.FSC;
+            })
+           
+            var damsTotal = dams.filter( function (d) { return d.Dam == "Total"; })
+            
+            var damsNoTotal = dams.filter( function (d) { return d.Dam !== "Total"; })
+            
+            
+            if(width < 800) { var radius = 7; }
+            else { var radius = 10; }
+            
+          
+            console.log("----------");
+            console.log(width); 
+            console.log(radius);
+          
+          
+          
+            console.log("----------");
+          
+        
+            var circlemargin = 3,
+                    damcount = 210,
+//                    colcount = (width / (radius * 2 + circlemargin)).toFixed(0),
+                    colcount = ((width - (radius * 2)) / (radius * 2 + circlemargin)).toFixed(0),
+                    rowcount = ((damcount / colcount) + 1).toFixed(0),
+                    xpos = 1, 
+                    ypos = 1,
+                    yoffset = 0,
+                    xoffset = 15;
+          
+          
+          console.log(colcount);
+          console.log(rowcount);
+          
+          dams_svg.attr("height", function () { 
+              return rowcount * (radius * 4 + (circlemargin * 2)) + yoffset;  
+            })
+            
+            d3.select("#dams")
+                .style("height", function (){
+                    return rowcount * (radius * 3 + circlemargin) + yoffset;
+                
+            })
+            
+            
+            
+            function add_dams() { 
+                 dams_alpha_no_total = dams_by_alpha.filter( function (d) { return d.Dam !== "Total"; })
+                
+                
+                dams_alpha_no_total.forEach( function (d) { 
+                    d.rowc = + d.rowc;
+                    d.Dam = (d.Dam).replace("Dam","");
+                    })
+                
+//                console.log(dams_alpha_no_total.length);
+                
+                var dams = dams_svg.append("g")
+                    
+                
+                
+                var xpos = 1, 
+                    ypos = 1;
+                
+                dams_alpha_no_total.forEach( function (d, i) { 
+                    
+                    d.ypos = (function () { 
+                        return ypos;
+                    
+                    })();
+                    
+                    d.xpos = (function () { 
+                        var newx = xpos; 
+                        xpos = xpos + 1;
+                        if(xpos == colcount) { xpos = 1; ypos = ypos + 1; }
+                        return newx; 
+                    })();
+                    
+                    
+                    
+                })
+                
+                
+                
+                dams_alpha_no_total.forEach( function (d) { 
+                    
+                    dams.append("circle")
+                        .attr("cx", function () { return d.xpos * (radius * 2 + circlemargin); })
+                        .attr("cy", function () { return d.ypos * (radius *2 + circlemargin) + yoffset; })
+                        .attr("r", radius)
+                    .attr("class", "droplet")
+                        .style("fill", "dodgerblue")
+                        .style("stroke", "none")
+                        
+                        
+                        .on("mouseover", function () { 
+                            tooltip.style("visibility","visible")
+                            
+//                            d3.select(this).style("fill", "crimson")
+                        })
+                        .on("mousemove", function () { 
+                        
+                            
+                            
+                            var tip = "<div style='font-weight: 700; text-transform:uppercase;'>" + d.Dam + "</div>";
+                            tip += format(d.FSC) + " million m<sup>3</sup>";
+                            tooltip.html(tip)
+                                .style("left", (d3.event.pageX + 20) + "px")     
+                                .style("top", (d3.event.pageY - 20) + "px"); 
+                            
+                        })
+                        .on("mouseout", function () { 
+                            tooltip.style("visibility", "hidden")
+//                            d3.select(this).style("fill", "dodgerblue")
+                        })
+                    
+                })
+                
+                
+//                var text1 = dams_svg.append("foreignObject")
+//                    .attr("y", function () { 
+////                        return rowcount * (radius * 3 + (circlemargin * 2)); 
+//                        return 0;
+//                    })
+//                    .attr("x", xoffset)
+//                    .attr("width", width)
+//                    .html("<div class='dams1'><div class='head'>SA's 210 Storage Dams</div>Capturing and storing what little rain South Africa does receive is key in the country's water management strategy. To this end there are 210 listed storage dams that make up a total potential storage of " + format(damsTotal[0].FSC) + " million cubic meters.</div>")
+//                    .attr("class", "damnotes")
+                
+                d3.select(".dams1").html("Capturing and storing what little rain South Africa does receive is key in the country's water management strategy. To this end there are 210 listed storage dams that make up a total potential storage of " + format(damsTotal[0].FSC) + " million cubic meters.")
+              
+                    
+                
+                
+            }
+        
+            add_dams();
+          
+          
+          
+          
+          function dams2() { 
+                
+                annotation.remove();
+            
+                 dams_svg.selectAll(".droplet")
+                    .data(damsNoTotal)
+                    .on("mouseover", function (d) { 
+                     
+                        console.log(d); 
+                     
+                        var tip = "<div style='font-weight: 700; text-transform:uppercase;'>" + d.Province + "<br/><span style='text-transform:none;'>" + d.Dam + "</span></div>";
+                        
+                        tip += format(d.FSC) + " million m<sup>3</sup>";
+                
+                        
+                        
+                        tooltip.style("visibility","visible")
+                            .html(tip)
+                                .style("left", (d3.event.pageX + 20) + "px")     
+                                .style("top", (d3.event.pageY - 20) + "px");
+//                    .style("background",contColors[i])
+               
+                    
+                    
+                    })
+                    .on("mouseout", function () { 
+                        return tooltip.style("visibility","hidden")
+                    })
+                    .on("mousemove", function (d,i) { 
+               
+//                        tooltip.style("x", d3.mouse(this)[0] + ttoffsetx)
+//                            .style("y", d3.mouse(this)[1] + ttoffsety)
+                    
+                    })
+                    .transition()
+                    .duration( function (d,i) { 
+                        return i * 10; 
+                    })
+                    .style("fill", function (d)  { 
+                        return colors[d.Province_Index];
+                    })
+                    .style("opacity", 1)
+                 
+                 
+                 // CREATE PROVINCE LEGEND
+                 var provinces = [];
+                 var marker; 
+              
+                 damsNoTotal.forEach( function (d) { 
+                     
+                     if(d.Province_Index !== marker) { 
+                         provinces.push( { 
+                            province: d.Province,
+                             province_code: d.Province_Code,
+                             province_index: d.Province_Index
+                         } )
+                         
+                     marker = d.Province_Index;
+                     }
+                 
+                 })
+                 
+                 
+                dams_svg.selectAll(".provlegend")
+                    .data(provinces)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", function (d,i) { 
+                        if(i < 5) { 
+                            return i * 50 + xoffset +5;
+                        }
+                        else { 
+                            i = i - 5; 
+                            return i * 50 + xoffset +5;
+                        }
+                    })
+                    .attr("cy", function (d,i) { 
+                        if(i < 5) { 
+                            return rowcount * (radius * 2.6 + circlemargin);
+                        }
+                        else {
+                            return rowcount * (radius * 3 + circlemargin);
+                        
+                        }
+                    })
+                    .attr("r", 6)
+                    .attr("class", "legends")
+                    .style("fill", function (d) { 
+                        return colors[d.province_index];
+                    })
+                
+                dams_svg.selectAll(".provlegendtext")
+                    .data(provinces)
+                    .enter()
+                    .append("text")
+                        .attr("x", function (d,i) { 
+                           if(i < 5) { 
+                            return i * 50 + xoffset +17;
+                        }
+                        else { 
+                            i = i - 5; 
+                            return i * 50 + xoffset +17;
+                        }
+                        })
+                        .attr("y", function (d, i) { 
+                            if(i < 5) { 
+                            return rowcount * (radius * 2.6 + circlemargin) + 5;
+                        }
+                        else {
+                            return rowcount * (radius * 3 + circlemargin) + 5;
+                        
+                        }
+                        })
+                        .text( function (d) { 
+                            return d.province_code;
+                        })
+//                        .style("fill", function (d) { 
+//                            return colors[d.province_index];
+//                        })
+                      
+                        .style("stroke-width", 1)
+                        .attr("class", "provlegendtext")
+                    
+                    
+                    
+                 
+                 
+                 d3.selectAll(".dams1")
+                    .html("The majority of South Africa's dams are located in the Eastern and Western Cape (86 of the 210 dams). North West, Limpopo and Mpumalanga each have more than 20 dams. ")
+            
+            }
+        
+        
+            function dams3() { 
+                
+                annotation.remove();
+                
+                
+                dams_svg.selectAll(".droplet")
+                    .data(dams_by_size)
+                    .transition()
+                    
+                    .duration(1000)
+
+                    .style("fill", function (d)  { 
+                        return colors[d.Province_Index];
+                    })
+                    .style("opacity", 1)
+//                    .style("opacity", function (d) { 
+//                        console.log(d);
+//                        if(d.rowc == 0 && d.xpos < 10) { 
+//                            return 1;
+//                        }
+//                        else { 
+//                            return 0.3;
+//                        }
+//                    })
+                    
+                
+                
+                
+                
+                    
+                    
+                    d3.selectAll(".dams1")
+                    .html("Five of SA's largest ten dams are in the Free State")
+            
+            }
+        
+        
+        
+            function dams4() { 
+                
+                
+                // ANNOTATIONS
+                
+//                annotation = dams_svg.append("g")
+//                
+//                
+                d3.selectAll(".droplet").transition()
+                    .duration(1000)
+                    .style("opacity", function (d) { 
+//                        console.log(d);
+                        if(d.rowc == 0 && d.xpos < 10) { 
+                            return 1;
+                        }
+                        else { 
+                            return 0.1;
+                        }
+                    })
+//                
+//                annotation.append("line")
+//                    .attr("x1", xoffset - circlemargin)
+//                    .attr("x2", function () { 
+//                        return (radius * 2 + circlemargin) * 10 + xoffset - circlemargin;
+//                    })
+//                    .attr("y1", yoffset + circlemargin)
+//                    .attr("y2", yoffset + circlemargin)
+//                    .style("stroke", "gray")
+//                    .style("stroke-width", 1)   
+//                    .style("shape-rendering", "crispEdges")
+//                
+//
+//                    
+//                    annotation.append("line")
+//                    .attr("x1", function () { 
+//                        return (radius * 2 + circlemargin) * 10 + xoffset - circlemargin;
+//                    })
+//                    .attr("x2", function () { 
+//                        return (radius * 2 + circlemargin) * 10 + xoffset - circlemargin;
+//                    })
+//                    .attr("y1", yoffset + circlemargin)
+//                    .attr("y2", yoffset + circlemargin+ (radius *2))
+//                    .style("stroke", "gray")
+//                    .style("stroke-width", 1)   
+//                    .style("shape-rendering", "crispEdges")
+//                    
+//                    annotation.append("line")
+//                    .attr("x1", xoffset - circlemargin)
+//                    .attr("x2", xoffset - circlemargin)
+//                    .attr("y1", yoffset + circlemargin)
+//                    .attr("y2", yoffset + circlemargin + (radius * 2))
+//                    .style("stroke", "gray")
+//                    .style("stroke-width", 1)   
+//                    .style("shape-rendering", "crispEdges")
+//                    
+//                    annotation.append("text")
+//                        .attr("x", function (d) { 
+//                            return xoffset;
+//                        })
+//                        .attr("y", yoffset - 3)
+//                        .text("These ten dams account for 64% of South Africa's total water storage capacity")
+//                        .attr("class", "legendtext")
+//                        .style("stroke","none")
+//                        .style("fill", "gray")
+//                    .style("shape-rendering", "crispEdges")
+            }
+        
+        
+            
+            d3.select(".one").style("background", "#000").style("color", "#fff")
+            
+            d3.select(".two")
+                .on("click", function () { 
+                    d3.selectAll(".dam").style("background", "#fff").style("color", "#000")
+                    d3.select(this).style("background", "#000").style("color", "#fff")
+                    dams2();
+                })
+            
+            d3.select(".three")
+                .on("click", function () { 
+                    d3.selectAll(".dam").style("background", "#fff").style("color", "#000")
+                    d3.select(this).style("background", "#000").style("color", "#fff")
+                    dams3();
+                })
+            
+            d3.select(".four")
+                .on("click", function () { 
+                    d3.selectAll(".dam").style("background", "#fff").style("color", "#000")
+                    d3.select(this).style("background", "#000").style("color", "#fff")
+                    dams4();
+                })
+          
+          
+            
+            } // END OF MAIN FUNCTION 
+      
+      
+      
+       
+    
+    queue()
+        .defer(d3.csv, 'data/all_dams.csv')
+        .defer(d3.csv, 'data/provinces.csv')
+        .defer(d3.csv, 'data/all_dams_size.csv')
+        .defer(d3.csv, 'data/all_dams_alpha.csv')
+        .await(main);
+      
+      
+      
+      
+      
+      
+
+    
+   
+    
+    
+</script>
+
+
+    </body>
+</html>

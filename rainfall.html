@@ -1,0 +1,379 @@
+<style>
+    body { 
+        font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    }
+ /* Rainfall stats styles */
+#rainfall { 
+        
+        margin-left: auto;
+        margin-right: auto;
+        min-height: 100px;
+        width: 100%;
+
+        
+    }
+    
+.axis text {
+  font: 12px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: dodgerblue;
+  fill-opacity: .9;
+    
+}
+    
+.za, .world { 
+    fill: crimson;
+    stroke-width: 2;
+    stroke: crimson;
+    shape-rendering: crispEdges;
+}
+    
+.world { 
+    
+    stroke-width: 0;
+    opacity: 1;
+    fill: #000;
+    shape-rendering: crispEdges;
+    }
+
+.x.axis path {
+  display: none;
+}
+
+label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+    
+.av_label{ 
+    stroke: none;
+    fill: #000; 
+    text-transform: uppercase;
+    font-size: 14px;
+}
+    
+.chart_label{ 
+    stroke: none;
+    fill: gray; 
+    font-size: 11px;
+}
+    
+/* Rainfall stats styles */
+    
+    
+</style>
+
+<script src="lib/d3.v3.min.js"></script>
+
+
+<div id="rainfall"></div>
+
+
+<!-- RAINFALL STATS -->
+   <script>
+    
+    
+    
+    var margin = { top: 30, right: 0, bottom: 30, left: 5}
+
+    var width = window.innerWidth;
+    
+    console.log(width);
+    
+    if(width > 800) width = 800;
+    
+    width = width - margin.left - margin.right;
+    
+   
+    var height = window.innerHeight * 0.5;
+    console.log(height);
+    
+
+    
+    height = height - margin.top - margin.bottom;
+    
+    d3.select("#rainfall")
+        .style("width", width + "px")
+    
+    var rain_svg = d3.select("#rainfall")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform","translate(" + margin.left + "," + margin.top + ")")
+        
+    var yrain = d3.scale.ordinal()
+    .rangeBands([0, height], .5);
+
+    var xrain = d3.scale.linear()
+    .range([0,width]);
+
+    var xAxis = d3.svg.axis()
+        .scale(xrain)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(yrain)
+        .orient("left")
+//        .tickFormat(formatPercent);
+    
+    d3.csv("data/rainfall_new.csv", function (rainfall) { 
+        
+        rainfall.forEach( function (d) { 
+            d.rain = +d.rain;
+        })
+        
+        var sarain = rainfall.filter( function (d) { return d.country_code === "za"; })
+        console.log(sarain);
+        var rain_top = rainfall.slice(0, 20);
+        rain_top[20] = sarain[0];
+        var rain_bottom = rainfall.slice(Math.max(rainfall.length - 20, 1));
+        rain_bottom[20] = sarain[0];
+        console.log(rain_top);
+        
+        yrain.domain(rainfall.map(function(d) { return d.country; }));
+        xrain.domain([0, d3.max(rainfall, function(d) { return d.rain; })]);
+        
+
+
+//  rain_svg.append("g")
+//      .attr("class", "y axis")
+//      .call(yAxis)
+  
+  
+  rain_svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  
+  
+  rain_svg.selectAll(".bar")
+      .data(rainfall)
+    .enter().append("rect")
+  .attr("class", function (d) { return d.country_code; })
+      .classed("bar", true)
+      .attr("x", 0)
+        .attr("y", function(d) { return yrain(d.country); })
+      .attr("height", yrain.rangeBand())
+      .attr("width", function(d) { return xrain(d.rain); })
+  
+  // ADD WORLD AVERAGE
+  
+  d3.select(".world")
+    .transition()
+    .duration(2000)
+    .attr("width", width)
+  
+  
+  // ADD LABELS 
+   var wrld_av_label = rain_svg.append("text")
+    .text("World Average: 990 mm/year")
+    .attr("x", width/2)
+    .attr("y", height/2 - 3)
+    .attr("class", "av_label")
+        
+   
+   var sa_av_label = rain_svg.append("text")
+    .text("South Africa:495 mm/year")
+    .attr("x", function () { 
+        var sa = d3.select(".za").attr("width");
+         
+       console.log(sa);
+       sa = +sa + 10;
+       console.log(sa);
+       return sa;
+    })
+    .attr("y", function () { 
+        var sa = d3.select(".za").attr("y");
+       sa = +sa + 5;
+       return sa;
+            
+                                 
+    })
+   .attr("class", "av_label")
+   
+//   // ADD CONTROLS
+//   var topten = rain_svg.append("text")
+//        .text("Most Rainfall")
+//        .attr("x", width - (width/3))
+//        .attr("y", height - (height/3))
+//        .attr("class", "av_label")
+//        .on("click", function () { 
+//            sa_av_label.style("display","none");
+//            wrld_av_label.style("display","none")
+//            d3.selectAll(".chart_label").remove();
+//            
+//            yrain.domain(rain_top.map(function(d) { return d.country; }));
+//            
+//            
+//            xrain.range([0,width/2]);
+//            
+//            var topitems = rain_svg.selectAll(".bar")
+//                .data(rain_top)
+//                
+//
+//            topitems.exit()
+//                .remove()
+//                
+//            topitems.transition()
+//                .duration(2000)
+//                .attr("y", function(d) { return yrain(d.country); })
+//                .attr("height", yrain.rangeBand())
+//                .attr("width", function(d) { return xrain(d.rain); })
+//                
+//            rain_svg.select("g.x.axis")
+//                .transition()
+//                .duration(2000)
+//                .call(xAxis)
+//            
+//            
+//                
+//            
+//            // add country labels
+//            var c_labels_top = rain_svg.selectAll(".c_labels")
+//                .data(rain_top)
+//                .enter()
+//                .append("text")
+//                .transition()
+//                .delay(2000)
+//                .text( function(d) { return d.country + " ( " + d.rain + "mm)"; })
+//                .attr("x", function (d) { return xrain(d.rain) + 10; })
+//                .attr("y", function (d) { return yrain(d.country) + 8; })
+//                .style("text-anchor","bottom")
+//                .attr("class", "chart_label")
+//                
+//            
+//          
+//            
+//        })
+//   
+//   
+//   
+//    var bottomten = rain_svg.append("text")
+//        .text("Least Rainfall")
+//        .attr("x", width - (width/3))
+//        .attr("y", height - (height/3 - 20))
+//        .attr("class", "av_label")
+//        .on("click", function () { 
+//            sa_av_label.style("display","none");
+//            wrld_av_label.style("display","none")
+//            d3.selectAll(".chart_label").remove();
+//            
+//            yrain.domain(rain_bottom.map(function(d) { return d.country; }));
+//            
+//            
+//            xrain.range([0,width/2]);
+//            
+//            var bottomitems = rain_svg.selectAll(".bar")
+//                .data(rain_bottom)
+//                
+//
+//            bottomitems.exit()
+//                .remove()
+//                
+//            bottomitems.transition()
+//                .duration(2000)
+//                .attr("y", function(d) { return yrain(d.country); })
+//                .attr("height", yrain.rangeBand())
+//                .attr("width", function(d) { return xrain(d.rain); })
+//                
+//            rain_svg.select("g.x.axis")
+//                .transition()
+//                .duration(2000)
+//                .call(xAxis)
+//            
+//            // add country labels
+//            var c_labels_bottom = rain_svg.selectAll(".c_labels")
+//                .data(rain_bottom)
+//                .enter()
+//                .append("text")
+//                .transition()
+//                .delay(2000)
+//                .text( function(d) { return d.country + " ( " + d.rain + "mm)"; })
+//                .attr("x", function (d) { return xrain(d.rain) + 10; })
+//                .attr("y", function (d) { return yrain(d.country) + 8; })
+//                .style("text-anchor","bottom")
+//                .attr("class", "chart_label")
+//                
+//            
+//          
+//            
+//        })
+    
+    
+    
+//        var worldwide = rain_svg.append("text")
+//        .text("Worldwide")
+//        .attr("x", width - (width/3))
+//        .attr("y", height - (height/3 - 40))
+//        .attr("class", "av_label")
+//        .on("click", function () { 
+//            sa_av_label.style("display","block");
+//            wrld_av_label.style("display","block")
+//            d3.selectAll(".chart_label").remove();
+//            
+//            yrain.domain(rainfall.map(function(d) { return d.country; }));
+//            
+//            
+//            xrain.range([0,width]);
+//            
+//            var worldwide = rain_svg.selectAll(".bar")
+//                .data(rainfall)
+//                
+//            
+//            worldwide.enter()
+//                .append("rect")
+//            
+//  .attr("class", function (d) { return d.country_code; })
+//      .classed("bar", true)
+//      .attr("x", 0)
+//        .attr("y", function(d) { return yrain(d.country); })
+//      .attr("height", yrain.rangeBand())
+//      .attr("width", function(d) { return xrain(d.rain); })
+//            
+//            
+//                
+//
+//            worldwide.exit()
+//                .remove()
+//                
+//            worldwide.transition()
+//                .duration(2000)
+//                .attr("y", function(d) { return yrain(d.country); })
+//                .attr("height", yrain.rangeBand())
+//                .attr("width", function(d) { return xrain(d.rain); })
+//                
+//            rain_svg.select("g.x.axis")
+//                .transition()
+//                .duration(2000)
+//                .call(xAxis)
+//            
+//            
+//            d3.select(".world")
+////    .transition()
+////    .duration(2000)
+//    .attr("width", width)
+//            
+//            
+//        })
+//   
+   
+   
+   
+    
+    })
+    
+    
+
+</script>

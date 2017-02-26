@@ -1,0 +1,1354 @@
+<script>
+
+//window.location = "index_m.html";
+
+</script>
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="lib/font-awesome-4.6.3/css/font-awesome.css">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,700|Slabo+27px" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
+
+    <link type="text/css" href="https://cdn.jotfor.ms/before-after/before-after.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+    <script src="lib/leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles_rain.css">
+    <link rel="stylesheet" href="styles_dams.css">
+    <link rel="stylesheet" href="styles_keydams.css">
+    <link rel="stylesheet" href="styles_map.css">
+    <script src="data/top_ten_dams_json.js"></script>
+    <script src="data/drainageareas.js"></script>
+    <script src="lib/d3.v3.min.js"></script>
+    <script src="liquidFillGauge.js"></script>
+    <script src="lib/queue.v1.min.js"></script>
+    <script src="../lib/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+ &nbsp; <span class="width screen"> x </span><span class="height screen"></span>
+<script>
+    $(".width").text(window.innerWidth + " X ")
+    $(".height").text(window.innerHeight)
+    
+</script>
+<div class="tooltip">Tooltip</div>
+
+<div class="main-title">
+ South Africa's Water Challenge
+ 
+ 
+</div>
+ 
+
+ <div class="mainblurb">PART 1<br />SA's Water Storage Infrastructure </div>
+
+
+
+<div class="maincontainer">
+
+<div class="content-box">
+   <div class="content-title">Scarce Resource</div>
+    <p>South Africa is a water-scarce country. According to the World Bank's database of <a href="http://data.worldbank.org/indicator/AG.LND.PRCP.MM">annual global rainfall averages</a> South Africa receives an average of 495mm of rain a year. This is almost half of the global average of 990mm and significantly less than the rain received by Colombia which tops the list at 3,240mm a year. 
+                
+                   
+
+                </p>
+                <div id="rainfall"></div>
+                
+<!--    <div id="contribution"></div>-->
+    
+</div>
+
+<div class="content-box">
+    <div class="content-title">Saving For Lean Times</div>
+    <p>Receiving just a fraction of the annual rainfall most other countries in the world do South Africa is heavily reliant on its ability to capture and store water for leaner times. It does this by maintaining a network of storage dams across the county. At this time the Department of Water and Sanitation manages a total of 210 dams that make up the backbone of the country's water management strategy. While the majority of these dams are located in the Eastern and Western Cape it is provinces like the Free State that play the largest role in managing the water risk the country faces.
+    </p>
+    <p>In the chart below each circle represents one of these 210 dams.</p> 
+    
+     <div id="dams">
+      <div class="damnav">
+        <div class="dam one">1</div>
+        <div class="dam two">2</div>
+        <div class="dam three">3</div>
+        <div class="dam four">4</div>
+    </div>
+    <div class='dams1'></div>
+    
+  </div>
+   
+   <p>Of the 210 dams it is just a handful that make up the bulk of South Africa's water storage capacity. In the chart below the five largest dams account for almost 50% of the country's storage. Their individual contribution to overall storage is also indicated. The other 205 dams account for the remaining 50%. 
+
+                </p>
+       <div id="keydams"></div>   
+    
+</div>
+
+
+
+
+
+<div class="content-box">
+   <div class="content-title">The State of Dam Storage: November 2015 to February 2017</div>
+    
+
+
+<div class="gauge-controls gc-top">
+
+                    <div class="National pgc"><input class="gc" type="checkbox" id="gc" name="National" checked> National</div>
+                    <div class="Eastern Cape pgc"><input class="gc" type="checkbox" id="gc" name="Eastern Cape"> Eastern Cape</div>
+                    <div class="Free State pgc"><input class="gc" type="checkbox" id="gc" name="Free State"> Free State</div>
+                    <div class="Gauteng pgc"><input class="gc" type="checkbox" id="gc" name="Gauteng"> Gauteng</div>
+                    <div class="KwaZulu-Natal pgc"><input class="gc" type="checkbox" id="gc" name="KwaZulu-Natal"> KwaZulu-Natal</div>
+                    <div class="Limpopo pgc"><input class="gc" type="checkbox" id="gc" name="Limpopo"> Limpopo</div>
+                    <div class="Mpumalanga pgc"><input class="gc" type="checkbox" id="gc" name="Mpumalanga"> Mpumalanga</div>
+                    <div class="North West pgc"><input class="gc" type="checkbox" id="gc" name="North West"> North West</div>
+                    <div class="Northern Cape pgc"><input class="gc" type="checkbox" id="gc" name="Northern Cape"> Northern Cape</div>
+                    <div class="Western Cape pgc"><input class="gc" type="checkbox" id="gc" name="Western Cape"> Western Cape</div>
+                    <div class="Lesotho pgc"><input class="gc" type="checkbox" id="gc" name="Lesotho"> Lesotho</div>
+
+
+                </div>
+                
+                
+    <div class="gauge-holder">
+                
+    
+ 
+ 
+  <svg id="fillgauge1" width="30%" height="200"></svg>
+  <svg id="fillgauge2" width="30%" height="200"></svg>
+  <svg id="fillgauge3" width="30%" height="200"></svg>
+  
+  
+  <div class="gauge-controls gc-bottom">
+
+                    <div class="National pgc2"><input class="gc" type="checkbox" id="gc" name="National" checked> National</div>
+                    <div class="Eastern Cape pgc2"><input class="gc" type="checkbox" id="gc" name="Eastern Cape"> Eastern Cape</div>
+                    <div class="Free State pgc2"><input class="gc" type="checkbox" id="gc" name="Free State"> Free State</div>
+                    <div class="Gauteng pgc2"><input class="gc" type="checkbox" id="gc" name="Gauteng"> Gauteng</div>
+                    <div class="KwaZulu-Natal pgc2"><input class="gc" type="checkbox" id="gc" name="KwaZulu-Natal"> KwaZulu-Natal</div>
+                    <div class="Limpopo pgc2"><input class="gc" type="checkbox" id="gc" name="Limpopo"> Limpopo</div>
+                    <div class="Mpumalanga pgc2"><input class="gc" type="checkbox" id="gc" name="Mpumalanga"> Mpumalanga</div>
+                    <div class="North West pgc2"><input class="gc" type="checkbox" id="gc" name="North West"> North West</div>
+                    <div class="Northern Cape pgc2"><input class="gc" type="checkbox" id="gc" name="Northern Cape"> Northern Cape</div>
+                    <div class="Western Cape pgc2"><input class="gc" type="checkbox" id="gc" name="Western Cape"> Western Cape</div>
+                    <div class="Lesotho pgc2"><input class="gc" type="checkbox" id="gc" name="Lesotho"> Lesotho</div>
+
+
+                </div>
+
+</div>
+  
+ 
+   
+   
+
+<div style="clear: both;"></div>   
+    
+</div>
+ 
+ <div class="content-box">
+     <p>The latter part of 2016 brought with it a drought widely considered to be among the worst ever experienced by the country. The charts above illustrate the nation and provincial water levels as measured in November 2015, November 2016 and February 2017. Lesotho is also included as the Lesotho Highlands Water Project is a key part of South Africa's water management strategy.</p>
+     
+     <p><span style="font-weight: bold;">Note:</span> These are water levels for dams officially located in each provincial management area. They do not indicate how much water each province has. Gauteng, for example, has just a handful of small dams and these were relatively full throughout the drought season. But Gauteng's metropolitan areas receive their water primarily from the large storage dams located in the Free State administrative areas.</p>
+    </div>
+    
+    <div class="content-box">
+     
+     <div class="content-title">Floods, Droughts And Extremes</div>
+<p>As we can see from the above the 2016/2017 drought season intially affected the inland and mostly more northern provinces. The peak of the drought period for most of these provinces was in November 2016. At this time the Limpopo and Mpumalanga dam levels were down between 22 - 26% when compared with November 2015 and the Free State dams were down 17% compared to the previous year. The low levels of these dams affected not only the province they were located in but also had a major impact on the major metropolitan areas in Gauteng. By mid-November 2016 the Vaal dam, the key supplier of water to Gauteng cities, was perilously low at around 26% of its full storage capacity.</p> 
+     
+     
+       
+         
+<!--     At this point Western Cape dams were lower than the previous November but only by a slightly smaller 9%.  . At the start of 2016 for example, the Vaal dam was approximately 54% of its full storage capacity (FSC). By mid-November 2016 the dam was perilously close to dry at 26%. Good rains in the December to February have rapidly boosted the state of the Vaal  dam, so much so that now there are <a href=“flood warnings”>flood warnings</a> for residents in the flood plain below the dam as it reaches full capacity. </p>-->
+
+
+
+    
+    
+    </div>
+    
+    <div class="content-box-wide">
+  
+    <div class="slider">  
+<iframe frameborder="0" class="juxtapose" width="100%" height="700" src="https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=79bc310e-f77d-11e6-a50c-0edaf8f81e27"></iframe>
+    </div>
+    
+
+   
+    </div>  
+    
+    
+    <div class="content-box">
+       <p>The photos above are of the Theewaterskloof dam taken in 2014 and again last month. </p>
+        
+        <p>While the Western Cape's dams were lower than previous comparative periods the full effect of the drought didn't really start to take hold until early 2017. The province's dams were almost 60% full in mid-November 2016. But, as the more northern provinces experienced good rains in late 2016 and began to recover the Western Cape fell deeper into the drought. By February the province's dams were down to just 33% of their total storage capacity.</p>
+     
+      <p>
+      The province's largest dam, Theewaterskloof, which accounts for more than 25% of the province's total storage potential is down to 28.9% of capacity, down from 43% the same time last year. </p>
+      
+      
+    </div>
+  
+  
+   
+<!--
+   <div class="content-title">
+       Section title
+   </div>
+-->
+ 
+  <div class="content-box-trans trans2"></div>
+   <div class="content-box">
+       
+       <div class="content-title">Extremes</div>
+<p>
+One of the features of the 2016/2017 drought, particularly in the centre and the north of the country, were the extreme weather conditions. In early November 2016 when the Vaal dam was nearing its lowest levels water authorities made a decision to release water from the Sterkfontein dam tosupplement the Vaal and avert a major problem. At the same time parts of Gauteng were experiencing extreme flooding conditions. In the early part of November 2016 major floods swept parts of the province causing significant infrastructure damage and even deaths. 
+</p>
+
+       
+   </div>
+   
+    
+
+ 
+
+  
+<!--
+  <div class="content-box">
+      <div class="content-title">Saving for Another Day</div>
+      
+      <div class="tooltip">Tooltip</div>
+  <div id="dams">
+      <div class="damnav">
+        <div class="dam one">1</div>
+        <div class="dam two">2</div>
+        <div class="dam three">3</div>
+        <div class="dam four">4</div>
+    </div>
+    <div class='dams1'></div>
+    
+  </div>
+  <div style="clear: both;"></div>
+  </div>
+  
+  
+-->
+  
+  
+  
+  
+   
+   <div class="content-box">
+       <div class="content-title">SA's Largest Dams</div>
+       
+       <div id="map" style="width: 100%; min-height: 200px;"></div>
+   </div>
+   
+
+   
+   
+   
+    </div> <!-- Maincontainer end -->
+    
+    
+    
+<script> 
+    var damColors = ["#b9b6cb","#abd8bc","#e5a2af","#9dd0dc","#e6b8a6","#aebce5","#cac4a1","#dbb7e0","#e1e8d0","#ebb9c7","#e1daec","#d9c0c7"]    
+         
+        var damtooltip; 
+    
+        var tooltip = d3.selectAll(".tooltip")
+        
+
+        d3.csv("data/dam_levels_national.csv", function (stats) {
+                
+                console.log(stats);
+                
+//           
+
+        var provinces = ['National','Gauteng','Free State','Western Cape','Eastern Cape','North West','Limpopo','Northern Cape','KwaZulu-Natal','Mpumalanga','Lesotho'];
+        var provcode = ['N','GP','FS','WC','EC','NW','LP','NC','KZN'];
+
+        function round(value, precision) {
+            var multiplier = Math.pow(10, precision || 0);
+            return Math.round(value * multiplier) / multiplier;
+        }
+
+        stats.forEach( function (d) {
+            d.this_week = +round(d.this_week,1);
+            d.last_week = +round(d.last_week,1);
+            d.last_year = +round(d.last_year,1);
+        })
+
+
+        if(window.innerWidth < 400) { 
+            var windowWidth = window.innerWidth,
+                windowHeight = window.innerHeight,
+                gaugeWidth = 100,
+                gaugeHeight = 100,
+                gaugePadding = 10,
+                center = windowWidth / 2;
+        }
+        else { 
+            var windowWidth = window.innerWidth,
+                windowHeight = window.innerHeight,
+                gaugeWidth = 170,
+                gaugeHeight = 170,
+                gaugePadding = 10,
+                center = windowWidth / 2;
+        
+        }
+//
+        var svg = d3.select("#fillgauge1")
+            .attr("height", gaugeHeight + 60)
+            .attr("width", gaugeWidth)
+            .style("padding-left","20px")
+            .style("padding-right","20px")
+
+        var svg = d3.select("#fillgauge2")
+            .attr("height", gaugeHeight + 60)
+            .attr("width", gaugeWidth)
+            .style("padding-left","20px")
+            .style("padding-right","20px")
+        
+        
+        var svg = d3.select("#fillgauge3")
+            .attr("height", gaugeHeight + 60)
+            .attr("width", gaugeWidth)
+            .style("padding-left","20px")
+            .style("padding-right","20px")
+
+        // DEFINE GUAGES
+        var config4 = liquidFillGaugeDefaultSettings();
+        config4.circleThickness = 0.1;
+        config4.circleColor = "#dd7eb1";
+        config4.textColor = "#545454";
+        config4.waveTextColor = "#fff";
+        config4.waveColor = "#dd7eb1";
+        config4.textVertPosition = 0.2;
+        config4.waveAnimateTime = 2000;
+        config4.waveHeight = 0.05;
+        config4.waveAnimate = true;
+        config4.waveRise = true;
+        config4.waveHeightScaling = false;
+        config4.waveOffset = 0.25;
+        config4.textSize = 0.45;
+        config4.waveCount = 2;
+        var gauge1 = loadLiquidFillGauge("fillgauge1", stats[10].last_year, config4);
+
+         var config4 = liquidFillGaugeDefaultSettings();
+        config4.circleThickness = 0.1;
+        config4.circleColor = "#9698d1";
+        config4.textColor = "#606060";
+        config4.waveTextColor = "#fff";
+        config4.waveColor = "#9698d1";
+        config4.textVertPosition = 0.2;
+        config4.waveAnimateTime = 2000;
+        config4.waveHeight = 0.05;
+        config4.waveAnimate = true;
+        config4.waveRise = false;
+        config4.waveHeightScaling = false;
+        config4.waveOffset = 0.25;
+        config4.textSize = 0.45;
+        config4.waveCount = 2;
+        var gauge2 = loadLiquidFillGauge("fillgauge2", stats[10].this_week, config4);
+            
+        
+         var config4 = liquidFillGaugeDefaultSettings();
+        config4.circleThickness = 0.1;
+        config4.circleColor = "#50bf8b";
+        config4.textColor = "#606060";
+        config4.waveTextColor = "#fff";
+        config4.waveColor = "#50bf8b";
+        config4.textVertPosition = 0.2;
+        config4.waveAnimateTime = 2000;
+        config4.waveHeight = 0.05;
+        config4.waveAnimate = true;
+        config4.waveRise = false;
+        config4.waveHeightScaling = false;
+        config4.waveOffset = 0.25;
+        config4.textSize = 0.45;
+        config4.waveCount = 2;
+        var gauge3 = loadLiquidFillGauge("fillgauge3", stats[10].feb, config4);
+
+        //ADD GAUGE LABELS
+
+        var g1 = d3.select("#fillgauge1").append("text").text("November 2015");
+        var g2 = d3.select("#fillgauge2").append("text").text( function () { return "November 2016"; });
+        var g3 = d3.select("#fillgauge3").append("text").text( function () { return "February 2017"; });
+
+        g1.style("stroke","#545454").style("stroke-width","1").attr("class","labels").attr("y", gaugeHeight + 50).attr("x", gaugeWidth/2).style("text-anchor","middle")
+        g2.style("stroke","#545454").style("stroke-width","1").attr("class","labels").attr("y", gaugeHeight + 50).attr("x", gaugeWidth/2).style("text-anchor","middle")
+        g3.style("stroke","#545454").style("stroke-width","1").attr("class","labels").attr("y", gaugeHeight + 50).attr("x", gaugeWidth/2).style("text-anchor","middle")
+        
+        
+        
+        // GAUGE CONTROLS
+        provinces.forEach( function (d) {
+            d3.selectAll("[name='" + d +"']").on("change", function () {
+
+                d3.selectAll(".gc").property('checked', false);
+                d3.select(this).property('checked',true);
+                  d3.selectAll(".pgc").style("font-weight", "normal")
+                d3.select("[class='" + d + " pgc']").style("font-weight","700")
+                var curStats = stats.filter( function (dd) {
+                    return dd.province === d;
+                })
+
+            gauge1.update(curStats[0].last_year);
+            gauge2.update(curStats[0].this_week);
+            gauge3.update(curStats[0].feb);
+            })
+        })
+
+        
+            });
+
+   
+    </script>
+    
+    
+    <!-- RAINFALL STATS -->
+   <script>
+    
+    
+    
+    var margin = { top: 30, right: 0, bottom: 30, left: 5}
+
+    var width = window.innerWidth;
+    
+    console.log(width);
+    
+    if(width > 800) width = 800;
+    
+    width = width - margin.left - margin.right - 50;
+    
+   
+    var height = window.innerHeight * 0.6;
+    console.log(height);
+    
+
+    
+    height = height - margin.top - margin.bottom;
+    
+    d3.select("#rainfall")
+        .style("width", width + "px")
+    
+    var rain_svg = d3.select("#rainfall")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform","translate(" + margin.left + "," + margin.top + ")")
+        
+    var yrain = d3.scale.ordinal()
+    .rangeBands([0, height], .5);
+
+    var xrain = d3.scale.linear()
+    .range([0,width]);
+
+    var xAxis = d3.svg.axis()
+        .scale(xrain)
+        .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+        .scale(yrain)
+        .orient("left")
+//        .tickFormat(formatPercent);
+    
+    d3.csv("data/rainfall_new.csv", function (rainfall) { 
+        
+        rainfall.forEach( function (d) { 
+            d.rain = +d.rain;
+        })
+        
+        var sarain = rainfall.filter( function (d) { return d.country_code === "za"; })
+        console.log(sarain);
+        var rain_top = rainfall.slice(0, 20);
+        rain_top[20] = sarain[0];
+        var rain_bottom = rainfall.slice(Math.max(rainfall.length - 20, 1));
+        rain_bottom[20] = sarain[0];
+        console.log(rain_top);
+        
+        yrain.domain(rainfall.map(function(d) { return d.country; }));
+        xrain.domain([0, d3.max(rainfall, function(d) { return d.rain; })]);
+        
+
+
+//  rain_svg.append("g")
+//      .attr("class", "y axis")
+//      .call(yAxis)
+  
+  
+  rain_svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  
+  
+  rain_svg.selectAll(".bar")
+      .data(rainfall)
+    .enter().append("rect")
+  .attr("class", function (d) { return d.country_code; })
+      .classed("bar", true)
+      .attr("x", 0)
+        .attr("y", function(d) { return yrain(d.country); })
+      .attr("height", yrain.rangeBand())
+      .attr("width", function(d) { return xrain(d.rain); })
+  
+  // ADD WORLD AVERAGE
+  
+//  d3.select(".world")
+//    .transition()
+//    .duration(2000)
+//    .attr("width", width)
+  
+  
+  // ADD LABELS 
+//   var wrld_av_label = rain_svg.append("text")
+//    .text("World Average: 990 mm/year")
+//    .attr("x", width/2)
+//    .attr("y", height/2 - 3)
+//    .attr("class", "av_label")
+   
+   
+  var wrld_av_label = rain_svg.append("text")
+    .text("World Average: 990 mm/year")
+    .attr("x", function () { 
+        var w = d3.select(".world").attr("width");
+         
+       console.log(w);
+       w = +w + 10;
+       console.log(w);
+       return w;
+    })
+    .attr("y", function () { 
+        var w = d3.select(".world").attr("y");
+       w = +w + 5;
+       return w;
+            
+                                 
+    })
+   .attr("class", "av_label")
+        
+   
+   var sa_av_label = rain_svg.append("text")
+    .text("South Africa: 495 mm/year")
+    .attr("x", function () { 
+        var sa = d3.select(".za").attr("width");
+         
+       console.log(sa);
+       sa = +sa + 10;
+       console.log(sa);
+       return sa;
+    })
+    .attr("y", function () { 
+        var sa = d3.select(".za").attr("y");
+       sa = +sa + 5;
+       return sa;
+            
+                                 
+    })
+   .attr("class", "av_label")
+   
+   })
+    
+    
+    </script>
+    <!-- END RAINFALL STATS -->
+    
+    
+    
+    <!-- DAMS STATS -->
+    <script>
+        
+        
+        
+         var colors = ["#93d8a5",
+"#e9acd3",
+"#64dcd8",
+"#eead84",
+"#8ad1e9",
+"#c4c381",
+"#b6bde5",
+"#e0ebaa",
+"#dfc3b3",
+"#b2d5c3"];    
+      
+      
+      var width = $("#dams").width();
+      
+     
+      
+      var dams_svg = d3.select("#dams")
+        .append("svg")
+        .attr("width", width)
+        
+      
+      var format = d3.format(',');
+    
+      
+    
+      var annotation = dams_svg.append("g"); 
+      
+        
+//        var tooltip = dams_svg.append("div")
+//            .attr("class", "tooltip")
+//      
+      
+      function main(error, dams, provinces, dams_by_size, dams_by_alpha) { 
+            
+            
+            
+            provinces.forEach( function (d) { 
+                d.fsc = +d.fsc;
+            })
+            
+            var provincesNoTotal = provinces.filter( function (d) { return d.province !== "Total"; })
+            
+            
+            
+            dams.forEach( function (d) { 
+                d.FSC = +d.FSC;
+            })
+           
+            var damsTotal = dams.filter( function (d) { return d.Dam == "Total"; })
+            
+            var damsNoTotal = dams.filter( function (d) { return d.Dam !== "Total"; })
+            
+            
+            if(width < 800) { var radius = 7; }
+            else { var radius = 10; }
+            
+          
+            console.log("----------");
+            console.log(width); 
+            console.log(radius);
+          
+          
+          
+            console.log("----------");
+          
+        
+            var circlemargin = 3,
+                    damcount = 210,
+//                    colcount = (width / (radius * 2 + circlemargin)).toFixed(0),
+                    colcount = ((width - (radius * 2)) / (radius * 2 + circlemargin)).toFixed(0),
+                    rowcount = ((damcount / colcount) + 1).toFixed(0),
+                    xpos = 1, 
+                    ypos = 1,
+                    yoffset = 0,
+                    xoffset = 15;
+          
+          
+          console.log(colcount);
+          console.log(rowcount);
+          
+          dams_svg.attr("height", function () { 
+              return rowcount * (radius * 4 + (circlemargin * 2)) + yoffset;  
+            })
+            
+        function resizeDamBox () { 
+            
+            // GET DAMS1 HEIGHT
+            var damheight = $(".dams1").height();
+//            console.log("damheight: " + damheight);
+        
+          
+              d3.select("#dams")
+                    .style("height", function (){
+                        return rowcount * (radius * 3 + circlemargin) + yoffset + damheight;
+
+                })
+            
+        }
+          
+          resizeDamBox();
+            
+            
+            function add_dams() { 
+                 dams_alpha_no_total = dams_by_alpha.filter( function (d) { return d.Dam !== "Total"; })
+                
+                
+                dams_alpha_no_total.forEach( function (d) { 
+                    d.rowc = + d.rowc;
+                    d.Dam = (d.Dam).replace("Dam","");
+                    })
+                
+//                console.log(dams_alpha_no_total.length);
+                
+                var dams = dams_svg.append("g")
+                    
+                
+                
+                var xpos = 1, 
+                    ypos = 1;
+                
+                dams_alpha_no_total.forEach( function (d, i) { 
+                    
+                    d.ypos = (function () { 
+                        return ypos;
+                    
+                    })();
+                    
+                    d.xpos = (function () { 
+                        var newx = xpos; 
+                        xpos = xpos + 1;
+                        if(xpos == colcount) { xpos = 1; ypos = ypos + 1; }
+                        return newx; 
+                    })();
+                    
+                    
+                    
+                })
+                
+                
+                
+                dams_alpha_no_total.forEach( function (d) { 
+                    
+                    dams.append("circle")
+                        .attr("cx", function () { return d.xpos * (radius * 2 + circlemargin); })
+                        .attr("cy", function () { return d.ypos * (radius *2 + circlemargin) + yoffset; })
+                        .attr("r", radius)
+                    .attr("class", "droplet")
+                        .style("fill", "dodgerblue")
+                        .style("stroke", "none")
+                        
+                        
+                        .on("mouseover", function () { 
+                            
+                            tooltip.style("visibility","visible")
+                            
+                            var coordinates = d3.mouse(dams_svg.node());
+                            
+                            
+//                            d3.select(this).style("fill", "crimson")
+                        })
+                        .on("mousemove", function () { 
+                        
+                            
+                            
+                            var tip = "<div style='font-weight: 700; text-transform:uppercase;'>" + d.Dam + "</div>";
+                            tip += format(d.FSC) + " million m<sup>3</sup>";
+                            tooltip.html(tip)
+                            .style("left", (d3.event.pageX + 35) + "px")
+                            .style("top", (d3.event.pageY - 12) + "px");
+//                            
+                            
+                            
+                        })
+                        .on("mouseout", function () { 
+                            tooltip.style("visibility", "hidden")
+//                          
+                        })
+                    
+                })
+                
+                
+//                var text1 = dams_svg.append("foreignObject")
+//                    .attr("y", function () { 
+////                        return rowcount * (radius * 3 + (circlemargin * 2)); 
+//                        return 0;
+//                    })
+//                    .attr("x", xoffset)
+//                    .attr("width", width)
+//                    .html("<div class='dams1'><div class='head'>SA's 210 Storage Dams</div>Capturing and storing what little rain South Africa does receive is key in the country's water management strategy. To this end there are 210 listed storage dams that make up a total potential storage of " + format(damsTotal[0].FSC) + " million cubic meters.</div>")
+//                    .attr("class", "damnotes")
+                
+                d3.select(".dams1").html("Capturing and storing what little rain South Africa does receive is key in the country's water management strategy. To this end there are 210 listed storage dams that make up a total potential storage of " + format(damsTotal[0].FSC) + " million cubic meters.")
+              
+                    
+                resizeDamBox();
+                
+            }
+        
+            add_dams();
+          
+          
+          
+          
+          function dams2() { 
+                
+                annotation.remove();
+            
+                 dams_svg.selectAll(".droplet")
+                    .data(damsNoTotal)
+                    .on("mouseover", function (d) { 
+                     
+                        console.log(d); 
+                     
+                        var tip = "<div style='font-weight: 700; text-transform:uppercase;'>" + d.Province + "<br/><span style='text-transform:none;'>" + d.Dam + "</span></div>";
+                        
+                        tip += format(d.FSC) + " million m<sup>3</sup>";
+                
+                        
+                        
+                        tooltip.style("visibility","visible")
+                            .html(tip)
+                                .style("left", (d3.event.pageX + 20) + "px")     
+                                .style("top", (d3.event.pageY - 20) + "px");
+//                    .style("background",contColors[i])
+               
+                    
+                    
+                    })
+                    .on("mouseout", function () { 
+                        return tooltip.style("visibility","hidden")
+                    })
+                    .on("mousemove", function (d,i) { 
+               
+//                        tooltip.style("x", d3.mouse(this)[0] + ttoffsetx)
+//                            .style("y", d3.mouse(this)[1] + ttoffsety)
+                    
+                    })
+                    .transition()
+                    .duration( function (d,i) { 
+                        return i * 10; 
+                    })
+                    .style("fill", function (d)  { 
+                        return colors[d.Province_Index];
+                    })
+                    .style("opacity", 1)
+                 
+                 
+                 // CREATE PROVINCE LEGEND
+                 var provinces = [];
+                 var marker; 
+              
+                 damsNoTotal.forEach( function (d) { 
+                     
+                     if(d.Province_Index !== marker) { 
+                         provinces.push( { 
+                            province: d.Province,
+                             province_code: d.Province_Code,
+                             province_index: d.Province_Index
+                         } )
+                         
+                     marker = d.Province_Index;
+                     }
+                 
+                 })
+                 
+                 
+                dams_svg.selectAll(".provlegend")
+                    .data(provinces)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", function (d,i) { 
+                        if(i < 5) { 
+                            return i * 50 + xoffset +5;
+                        }
+                        else { 
+                            i = i - 5; 
+                            return i * 50 + xoffset +5;
+                        }
+                    })
+                    .attr("cy", function (d,i) { 
+                        if(i < 5) { 
+                            return rowcount * (radius * 2.6 + circlemargin);
+                        }
+                        else {
+                            return rowcount * (radius * 3 + circlemargin);
+                        
+                        }
+                    })
+                    .attr("r", 6)
+                    .attr("class", "legends")
+                    .style("fill", function (d) { 
+                        return colors[d.province_index];
+                    })
+                
+                dams_svg.selectAll(".provlegendtext")
+                    .data(provinces)
+                    .enter()
+                    .append("text")
+                        .attr("x", function (d,i) { 
+                           if(i < 5) { 
+                            return i * 50 + xoffset +17;
+                        }
+                        else { 
+                            i = i - 5; 
+                            return i * 50 + xoffset +17;
+                        }
+                        })
+                        .attr("y", function (d, i) { 
+                            if(i < 5) { 
+                            return rowcount * (radius * 2.6 + circlemargin) + 5;
+                        }
+                        else {
+                            return rowcount * (radius * 3 + circlemargin) + 5;
+                        
+                        }
+                        })
+                        .text( function (d) { 
+                            return d.province_code;
+                        })
+//                        .style("fill", function (d) { 
+//                            return colors[d.province_index];
+//                        })
+                      
+                        .style("stroke-width", 1)
+                        .attr("class", "provlegendtext")
+                    
+                    
+                    
+                 
+                 
+                 d3.selectAll(".dams1")
+                    .html("The majority of South Africa's dams are located in the Eastern and Western Cape (86 of the 210 dams). North West, Limpopo and Mpumalanga each have more than 20 dams. ")
+            
+            }
+        
+        
+            function dams3() { 
+                
+                annotation.remove();
+                
+                
+                dams_svg.selectAll(".droplet")
+                    .data(dams_by_size)
+                    .transition()
+                    
+                    .duration(1000)
+
+                    .style("fill", function (d)  { 
+                        return colors[d.Province_Index];
+                    })
+                    .style("opacity", 1)
+//                    .style("opacity", function (d) { 
+//                        console.log(d);
+//                        if(d.rowc == 0 && d.xpos < 10) { 
+//                            return 1;
+//                        }
+//                        else { 
+//                            return 0.3;
+//                        }
+//                    })
+                    
+                
+                
+                
+                
+                    
+                    
+                    d3.selectAll(".dams1")
+                    .html("Five of SA's largest ten dams are in the Free State")
+            
+            }
+        
+        
+        
+            function dams4() { 
+                
+                
+                // ANNOTATIONS
+                
+//                annotation = dams_svg.append("g")
+//                
+//                
+                d3.selectAll(".droplet").transition()
+                    .duration(1000)
+                    .style("opacity", function (d) { 
+//                        console.log(d);
+                        if(d.rowc == 0 && d.xpos < 10) { 
+                            return 1;
+                        }
+                        else { 
+                            return 0.1;
+                        }
+                    })
+
+            }
+        
+        
+            
+            d3.select(".one").style("background", "#000").style("color", "#fff")
+            
+            d3.select(".two")
+                .on("click", function () { 
+                    d3.selectAll(".dam").style("background", "#fff").style("color", "#000")
+                    d3.select(this).style("background", "#000").style("color", "#fff")
+                    dams2();
+                })
+            
+            d3.select(".three")
+                .on("click", function () { 
+                    d3.selectAll(".dam").style("background", "#fff").style("color", "#000")
+                    d3.select(this).style("background", "#000").style("color", "#fff")
+                    dams3();
+                })
+            
+            d3.select(".four")
+                .on("click", function () { 
+                    d3.selectAll(".dam").style("background", "#fff").style("color", "#000")
+                    d3.select(this).style("background", "#000").style("color", "#fff")
+                    dams4();
+                })
+            
+            
+            
+     
+            
+            
+       
+          
+            
+            } // END OF MAIN FUNCTION 
+      
+      
+      
+       
+    
+    queue()
+        .defer(d3.csv, 'data/all_dams.csv')
+        .defer(d3.csv, 'data/provinces.csv')
+        .defer(d3.csv, 'data/all_dams_size.csv')
+        .defer(d3.csv, 'data/all_dams_alpha.csv')
+        .await(main);
+      
+      
+      
+      
+      
+      
+
+    
+   
+    
+    
+    
+    </script>
+    
+    
+    <!-- END DAMS STATS -->
+    
+    
+    <!-- KEY DAMS -->
+    
+    <script> 
+      
+      var damColors = ["#b9b6cb","#abd8bc","#e5a2af","#9dd0dc","#e6b8a6","#aebce5","#cac4a1","#dbb7e0","#e1e8d0","#ebb9c7","#e1daec","#d9c0c7"] 
+      
+      var width = $("#keydams").width() ; 
+      
+      console.log(width);
+   
+        
+        d3.csv("data/fiftypercent.csv", function (topten) { 
+        
+        
+        
+         var key_svg = d3.select("#keydams")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 150)
+            .append("g")
+        
+        
+        var keyx = d3.scale.linear()
+            .range([0,width])
+        
+        var top_ten = topten.filter( function (d) { return d.dam !== "Total"; });
+        keyx.domain([0,topten[6].fsc])
+        
+      
+        
+        xPos2 = 0; 
+        yPos2 = 30;
+        
+        top_ten.forEach( function (d,i) { 
+            
+            
+            
+            d.fsc = +d.fsc;
+            
+            
+            
+            key_svg.append("rect")
+                .attr("class", "barscont")
+                .attr("width", function () { return keyx(d.fsc); })
+                .attr("height", 20)
+                .attr("x", xPos2)
+                .attr("y", 60)
+                .style("fill", damColors[i])
+                .classed("bars" + i, true)
+                .on("click", function () {
+                
+                    d3.select(this)
+                        .style("stroke","#000")
+                
+                    
+                    keylabels.html("<b>" + d.dam + "</b>:<br /> " + d.fsc + " million cubic meters")
+                    
+                })
+                .on("mouseover", function () {
+                
+                    d3.select(this)
+                        .style("stroke","#000")
+                
+                    
+                    keylabels.html("<b>" + d.dam + "</b>:<br /> " + d.fsc + " million cubic meters")
+                    
+                })
+                .on("mouseout", function () { 
+                
+                d3.select(this)
+                        .style("stroke","none")
+//                    d3.select(".info" + i)
+//                        .style("background", "#fff")
+//                    
+//                    d3.select(this)
+//                        .style("stroke","none")
+//                    
+//                    d3.select(".dam" + i)
+//                        .style("fill", "teal")
+//                        .attr("r", 5)
+//                    
+//                    damtooltip.style("visibility","hidden")
+                        
+                })
+            
+            
+               
+            key_svg.append("text")
+                .attr("x", function () { 
+                    return ((keyx(d.fsc))/2) + xPos2; 
+                })
+                .attr("y", yPos2)
+                .style("text-anchor","middle")
+                .text( function () { 
+//                    var dam = (d.dam).replace("Dam","");
+                    return d.percent + "%";
+                                    
+                                  })
+                .style("stroke", "none")
+                .style("fill","#000")
+                .style("font-size","0.7em")
+                .style("font-weight","bold")
+                
+                .attr("class","damlabels")
+                .style("shape-rendering", "crispEdges")
+                        
+
+               
+            
+            
+            
+             key_svg.append("line")
+                .attr("x1", function () { 
+                    return ((keyx(d.fsc))/2) + xPos2; 
+                })
+                .attr("x2", function () { 
+                    return ((keyx(d.fsc))/2) + xPos2; 
+                })
+                .attr("y1", yPos2 + 5 )
+                .attr("y2", 70)
+                .style("stroke", "#444")
+                .style("stroke-width", 1)
+                .style("shape-rendering", "crispEdges")
+             
+             key_svg.append("circle")
+                .attr("cx", function () { 
+                    return ((keyx(d.fsc))/2) + xPos2; 
+                })
+                .attr("cy", 70)
+                .attr("r", 2)   
+                .style("fill", "#444")
+             
+             if(i == 5) { 
+                 
+              key_svg.append("text")
+                .attr("x", function () { 
+                    return ((keyx(d.fsc))/2) + xPos2; 
+                })
+                .attr("y", 110)
+                .style("text-anchor","middle")
+                .text( "All Other Dams")
+                .style("stroke", "none")
+                .style("fill","#000")
+                .style("font-size","0.8em")
+                .style("font-weight","bold")
+                
+                .attr("class","damlabels")
+                .style("shape-rendering", "crispEdges")
+             
+             }
+            
+            
+            
+            
+//             
+//          
+//                
+             
+             if(yPos2 == 30){ yPos2 = 45; }
+            else { yPos2 = 30; }
+//            yPos2 += 10;
+             xPos2 += keyx(d.fsc);
+//            
+        })
+        
+        // ADD CLICK LABELS
+            var keylabels = key_svg.append("foreignObject")
+                .attr("x", 20)
+                .attr("y",90)
+//                .style("text-anchor","left")
+             
+//                .style("stroke", "none")
+//                .style("fill","#000")
+//                .style("font-size","0.8em")
+//                .style("font-weight","bold")
+              
+                
+                .attr("class","damlabels2")
+                .style("shape-rendering", "crispEdges")
+        
+        
+        })
+        
+        
+        
+    </script>
+    
+    <!-- END KEY DAMS -->
+    
+    
+    <!-- LARGEST DAMS -->
+    <script>
+        
+        var mapwidth = $("#map").width();
+        
+        if(mapwidth < 400) { 
+            var mapheight = mapwidth ; 
+            var zoom = 4;
+        }
+        else if(mapwidth < 800) { 
+            var mapheight = mapwidth ; 
+            var zoom = 6;
+        }
+        else { 
+            var mapheight = mapwidth * 0.6;
+            var zoom = 5;
+        }
+        
+        $("#map").height(mapheight);
+        
+        
+        
+         
+    
+        function highlightFeature(e) { 
+            
+            var layer = e.target;
+            
+            console.log(e.target.feature.properties);
+            var drainage = e.target.feature.properties.region;
+            d3.select("#feature-" + drainage).style("fill","dodgerblue");
+            
+            var popupContent = "<div class='popup'><div class='popuptitle'>" + e.target.feature.properties.dam + "</div>";
+            popupContent += "" + e.target.feature.properties.province;
+            popupContent += "</div>";
+
+		layer.bindPopup(popupContent);
+            this.openPopup();
+        
+        }
+        
+        
+            
+        function onEachFeature(feature, layer) {
+            layer.on({
+//                mouseover: highlightFeature,
+//                mouseout: resetHighlight,
+                click: highlightFeature
+//                mousemove: tooltipMove
+            });
+        }
+    
+    
+    
+    var mymap = L.map('map').setView([-28.7350938,25.3868996], zoom);
+        
+
+        
+
+        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 20,
+        id: 'alastairotter.07i8pfkj',
+        accessToken: 'pk.eyJ1IjoiYWxhc3RhaXJvdHRlciIsImEiOiJjaWc1NjM1dGYwYXV6djJtNjc5dGNqZThrIn0.SWLrLlYJWBdLvyIURec3FA'
+
+        }).addTo(mymap);
+        
+        mymap.scrollWheelZoom.disable();
+    
+    // ADD DRAINAGE AREAS
+        
+    var geoJsonLayer = L.geoJson(drainage, {
+        style: function (feature) {
+            return { 
+                weight: 1,
+                fillOpacity: 0.5,
+                fillColor:"none",
+                color:"none"
+                
+            }
+        }
+        
+    }).addTo(mymap);
+        
+        geoJsonLayer.eachLayer(function (layer) {
+    layer._path.id = 'feature-' + layer.feature.properties.id;
+});
+        
+    
+    L.geoJson(toptenjson, {
+
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		},
+
+		onEachFeature: onEachFeature,
+
+		pointToLayer: function (feature, latlng) {
+			return L.circleMarker(latlng, {
+				radius: 6,
+				fillColor: "Crimson",
+				color: "#fff",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.8
+			});
+		}
+	}).addTo(mymap);
+        
+    
+        
+        
+   
+                 
+        
+    </script>
+    <!-- END LARGEST DAMS -->
+    
+    
+    
+    
+    
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+dam,river,fsc,this_week,last_week,last_year,province,rank,province_code,color,lat,lon,percent
+Gariep Dam,Orange River,5196.1,47.4,48.3,56.8,Free State,1,FS,dodgerblue,-30.599528,25.581024,16.3
+Vanderkloof Dam,Orange River,3171.3,60.7,61.6,89.4,Free State,2,FS,dodgerblue,-29.988519,24.745674,9.9
+Sterkfontein Dam,Nuwejaarspruit River,2617,91.8,91.5,96.3,Free State,3,FS,dodgerblue,-28.448334,29.022274,8.2
+Vaal Dam,Vaal River,2603.5,26.2,26.4,53.9,Free State,4,FS,dodgerblue,-26.89472,28.145132,8.2
+Pongolapoort Dam,Phongolo River,2267.1,37,37.2,52.4,Kwazulu-Natal,5,KZN,crimson,-27.402165,31.957785,7.1
+All Other Dams,,16068.3,,,,,,,,,,50.4
+Total,,31923.3,,,,,,,,,,

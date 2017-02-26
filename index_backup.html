@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="lib/font-awesome-4.6.3/css/font-awesome.css">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
+
+    <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+    <script src="lib/leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="lib/d3.v3.min.js"></script>
+    <script src="liquidFillGauge.js"></script>
+<!--    <script src="../lib/jquery.min.js"></script>-->
+    <script src="lib/queue.v1.min.js"></script>
+
+
+</head>
+
+<body>
+<div class="mainhead">
+   <div class="maintitle">South Africa's Water Challenge</div>
+    <div class="mainblurb">South Africa is in the grip of what most experts say is the most severe drought the country has experienced in at least 25 years, if not longer. Respected climate scientist Bob Scholes of the Wits Global Change and Sustainability Research Institute says that the current drought is <a href="https://africacheck.org/2016/02/03/frequently-asked-questions-about-south-africas-drought/">"one of the biggest drought events in living memory"</a>. Nationally dam levels this week are 17% lower than they were a year ago and key storage dams such as the Vaal Dam are almost completely depleted.</div>
+    <div class="mainnext"><i class="fa fa-chevron-down" aria-hidden="true"></i></div>
+    
+</div>
+<div class="credits">
+       <div class="creditsdiv">
+           <div class="creditsleft">Data & Programming: <span class="name">Alastair Otter </span><a href="http://twitter.com/alastairotter"><img align="top" class="twitter" src="twitter.png"></a></div>
+           <div class="creditsright">A <a href="http://mediahack.co.za"><span class="mediahack">Media Hack Collective</span></a> project</div>
+    <div style="clear: both;"></div>
+    </div>
+    </div>
+<div id="maincontainer">
+   
+    <div id="container">
+
+
+            <div class="crosshead">A Deepening Crisis</div>
+            <div class="blurb">
+                <p>The gauges below compare the current dam levels within each of South Africa's provinces with the dam levesl at the same time last year. Lesotho is also included as it is home to the Lesotho Highlands Water Project, a key component in SA's water management strategy. Of the nine provinces only the North West current dam levels are higher than last year, albeit by a slight margin.</p> 
+
+                <p>Note: These levels are merely indicative of the stats of dams in each province, and not necessarily the amount of water each province has. Gauteng dam levels, for example, sit at close to 80% of full capacity, and yet the province is facing severe water restrictions. The reason is that Gauteng has just a couple of storage dams and relies on the major dams in the Free State for the majority of its water. </p>
+            </div>
+
+            <div class="gauges">
+                <div class="gauge-controls">
+
+                    <div class="National pgc"><input class="gc" type="checkbox" id="gc" name="National" checked> National</div>
+                    <div class="Eastern Cape pgc"><input class="gc" type="checkbox" id="gc" name="Eastern Cape"> Eastern Cape</div>
+                    <div class="Free State pgc"><input class="gc" type="checkbox" id="gc" name="Free State"> Free State</div>
+                    <div class="Gauteng pgc"><input class="gc" type="checkbox" id="gc" name="Gauteng"> Gauteng</div>
+                    <div class="KwaZulu-Natal pgc"><input class="gc" type="checkbox" id="gc" name="KwaZulu-Natal"> KwaZulu-Natal</div>
+                    <div class="Limpopo pgc"><input class="gc" type="checkbox" id="gc" name="Limpopo"> Limpopo</div>
+                    <div class="Mpumalanga pgc"><input class="gc" type="checkbox" id="gc" name="Mpumalanga"> Mpumalanga</div>
+                    <div class="North West pgc"><input class="gc" type="checkbox" id="gc" name="North West"> North West</div>
+                    <div class="Northern Cape pgc"><input class="gc" type="checkbox" id="gc" name="Northern Cape"> Northern Cape</div>
+                    <div class="Western Cape pgc"><input class="gc" type="checkbox" id="gc" name="Western Cape"> Western Cape</div>
+                    <div class="Lesotho pgc"><input class="gc" type="checkbox" id="gc" name="Lesotho"> Lesotho</div>
+
+
+                </div>
+
+                <svg id="fillgauge1" width="25%" height="200"></svg>
+                <svg id="fillgauge2" width="25%" height="200"></svg>
+
+            </div>
+
+
+
+            <div class="crosshead">Saving up for a (Less) Rainy Day</div>
+            <div class="blurb">
+                <p>Receiving just a fraction of the annual rainfall most other countries in the world do South Africa is heavily reliant on its ability to capture and store water for leaner times. To this end the Department of Water and Sanitation manages a network of 210 dams around the country that make up the bulk of SA's water management strategy. While the majority of these dams are located in the Eastern and Western Cape it is provinces like the Free State that play the largest role in managing the water risk the country faces.  
+
+                </p>
+            </div>
+            
+            <div id="contribution"></div>
+            
+            <div class="crosshead">The Key Dams</div>
+            <div class="blurb">
+                <p>Of the 210 dams it is just a handful that make up the bulk of South Africa's water storage capacity. In the chart below the ten largest dams account for 64% of the country's storage. Their individual contribution to overall storage is also indicated. The other 200 dams account for the remaining 36%. 
+
+                </p>
+            </div>
+            
+            <div id="contribution2"></div>
+            
+            
+
+
+           <div id="mapholder">
+
+           <div class="map-info-window"></div>
+           <div id="map"></div>
+            </div>
+            
+            <div style="clear: both;"></div>
+            
+            <div class="crossheadsmall">About</div>
+            <div class="blurb">
+                <p>As with the growing crisis with water in South Africa, this is an ongoing project. New elements will be added to this visualisation over time as they become relevant.
+
+                </p>
+                <p>Data for this project was primarily sourced from the Department of Water and Sanitation, and supplemented through additional research. While there are some (small) discrepancies between various pieces of data released by the department these genrally do not fundamentally alter the results shown here. And wherever possible an effort was made to validate and cross-check the data available.  </p>
+                
+                <p>Criticisms, thoughts & comments are welcome. I can be found on <a href="http://twitter.com/alastairotter">Twitter</a> or <a href="mailto:alastair@mediahack.co.za">email</a></p>
+            </div>
+    </div>  <!-- Closing Container Tag -->
+    </div> <!-- Closing MainContainer Tag -->
+
+    <script>
+         var damColors = ["#b9b6cb","#abd8bc","#e5a2af","#9dd0dc","#e6b8a6","#aebce5","#cac4a1","#dbb7e0","#e1e8d0","#ebb9c7","#e1daec","#d9c0c7"]    
+         
+        var damtooltip; 
+
+            d3.csv("data/dam_levels_national.csv", function (stats) {
+//           
+
+        var provinces = ['National','Gauteng','Free State','Western Cape','Eastern Cape','North West','Limpopo','Northern Cape','KwaZulu-Natal','Mpumalanga','Lesotho'];
+        var provcode = ['N','GP','FS','WC','EC','NW','LP','NC','KZN'];
+
+        function round(value, precision) {
+            var multiplier = Math.pow(10, precision || 0);
+            return Math.round(value * multiplier) / multiplier;
+        }
+
+        stats.forEach( function (d) {
+            d.this_week = +round(d.this_week,1);
+            d.last_week = +round(d.last_week,1);
+            d.last_year = +round(d.last_year,1);
+        })
+
+
+        var windowWidth = window.innerWidth,
+            windowHeight = window.innerHeight,
+            gaugeWidth = 180,
+            gaugeHeight = 180,
+            gaugePadding = 10,
+            center = windowWidth / 2;
+//
+        var svg = d3.select("#fillgauge1")
+            .attr("height", gaugeHeight + 60)
+            .attr("width", gaugeWidth)
+            .style("padding-left","20px")
+            .style("padding-right","20px")
+
+        var svg = d3.select("#fillgauge2")
+            .attr("height", gaugeHeight + 60)
+            .attr("width", gaugeWidth)
+            .style("padding-left","20px")
+            .style("padding-right","20px")
+
+        // DEFINE GUAGES
+        var config4 = liquidFillGaugeDefaultSettings();
+        config4.circleThickness = 0.1;
+        config4.circleColor = "#dd7eb1";
+        config4.textColor = "#545454";
+        config4.waveTextColor = "#fff";
+        config4.waveColor = "#dd7eb1";
+        config4.textVertPosition = 0.2;
+        config4.waveAnimateTime = 2000;
+        config4.waveHeight = 0.05;
+        config4.waveAnimate = true;
+        config4.waveRise = false;
+        config4.waveHeightScaling = false;
+        config4.waveOffset = 0.25;
+        config4.textSize = 0.45;
+        config4.waveCount = 2;
+        var gauge1 = loadLiquidFillGauge("fillgauge1", stats[10].this_week, config4);
+
+         var config4 = liquidFillGaugeDefaultSettings();
+        config4.circleThickness = 0.1;
+        config4.circleColor = "#9698d1";
+        config4.textColor = "#606060";
+        config4.waveTextColor = "#fff";
+        config4.waveColor = "#9698d1";
+        config4.textVertPosition = 0.2;
+        config4.waveAnimateTime = 2000;
+        config4.waveHeight = 0.05;
+        config4.waveAnimate = true;
+        config4.waveRise = false;
+        config4.waveHeightScaling = false;
+        config4.waveOffset = 0.25;
+        config4.textSize = 0.45;
+        config4.waveCount = 2;
+        var gauge2 = loadLiquidFillGauge("fillgauge2", stats[10].last_year, config4);
+
+        //ADD GAUGE LABELS
+
+        var g1 = d3.select("#fillgauge1").append("text").text("This week ( " + stats[0].date + ")");
+        var g2 = d3.select("#fillgauge2").append("text").text( function () { return "This Week Last Year"; });
+
+        g1.style("stroke","#545454").style("stroke-width","1").attr("class","labels").attr("y", gaugeHeight + 50).attr("x", gaugeWidth/2).style("text-anchor","middle")
+        g2.style("stroke","#545454").style("stroke-width","1").attr("class","labels").attr("y", gaugeHeight + 50).attr("x", gaugeWidth/2).style("text-anchor","middle")
+
+
+        // GAUGE CONTROLS
+        provinces.forEach( function (d) {
+            d3.select("[name='" + d +"']").on("change", function () {
+
+                d3.selectAll(".gc").property('checked', false);
+                d3.select(this).property('checked',true);
+                  d3.selectAll(".pgc").style("font-weight", "normal")
+                d3.select("[class='" + d + " pgc']").style("font-weight","700")
+                var curStats = stats.filter( function (dd) {
+                    return dd.province === d;
+                })
+
+            gauge1.update(curStats[0].this_week);
+            gauge2.update(curStats[0].last_year);
+            })
+        })
+
+
+        });
+
+
+     
+        
+        var x = d3.scale.linear()
+            .range([0,800])
+        
+
+        
+        
+    
+    </script>
+    
+    
+<!-- TOP TEN DAM CONTRIBUTIONS -->
+
+    
+
+
+<!-- LARGEST DAMS MAP -->
+
+    <script>
+        
+        function style(feature) {
+            
+            
+            var damclass = "dam" + feature.properties.SIZE;
+            
+            return {
+            fillColor: "dodgerblue",
+            className: damclass,
+            weight: 5,
+            opacity: 1,
+            color: 'dodgerblue',
+            dashArray: '',
+            fillOpacity: 1
+        };
+        }
+        
+        function highlightFeature(e) { 
+            
+            var layer = e.target;
+//           
+        }
+        
+        function onEachFeature(feature, layer) {
+            layer.on({
+                mouseover: highlightFeature,
+
+            });
+        }
+        
+        
+        
+        var zoom = 5;
+
+        var mymap = L.map('map').setView([-28.7350938,25.3868996], zoom);
+        
+
+        
+
+        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 20,
+        id: 'alastairotter.07i8pfkj',
+        accessToken: 'pk.eyJ1IjoiYWxhc3RhaXJvdHRlciIsImEiOiJjaWc1NjM1dGYwYXV6djJtNjc5dGNqZThrIn0.SWLrLlYJWBdLvyIURec3FA'
+
+        }).addTo(mymap);
+        
+        d3.csv("data/top_ten_dams.csv", function (topten) { 
+            
+            var topten1 = topten.filter( function (d) { return d.lat !== ""; })
+            
+            topten1.forEach( function (d) {
+                d.lat = +d.lat;
+                d.lon = + d.lon;
+                d.coords = [];
+                d.coords[0] = d.lat;
+                d.coords[1] = d.lon;
+            })
+            
+            
+
+
+        
+        
+        mymap.scrollWheelZoom.disable();
+        
+        
+        // ADDING POINTS MANUALLY
+        
+        var svg = d3.select( mymap.getPanes().markerPane ).append("svg").attr("width", 800).attr("height", 800), 
+            g = svg.append("g").attr("class", "leaflet-zoom-hide");
+        
+        function drawCircles(){
+
+  
+            
+
+            
+  var data = topten1.map( function(d){ var newPoint = mymap.latLngToLayerPoint( d.coords ); d.coords = { 'x' : newPoint.x, 'y' : newPoint.y }; return d; } )
+  
+  // ADD DAM TOOLTIPS
+  
+    damtooltip = g.append("foreignObject")
+        .attr("x", 20)
+        .attr("y", 20)
+        
+       
+  
+    
+  
+  // ADD DAM MARKERS
+  g.selectAll("circle").data( data ).enter().append("circle")
+    .attr("cx", function(d){ return d.coords.x } )
+    .attr("cy", function(d){ return d.coords.y } )
+    .attr("r", 5)
+    .style("fill", "teal")
+    .attr("class", function (d,i) { 
+        return "dam" + i;
+    })
+    .on("mouseover", function (d) { 
+        
+      
+        d3.select(this)
+            .style("cursor","default")
+            .style("fill", "crimson")
+            .attr("r",8)
+        
+        d3.select(".info" + (d.rank-1))
+                        .style("background", "#CAD2D3")
+        
+        d3.select(".bars" + (d.rank-1))
+                    .style("stroke","#000")
+                    .style("stroke-width", 1)
+        
+        var xp = d3.select(this).attr("cx"),
+            yp = d3.select(this).attr("cy");
+      
+      
+      var tip = "";
+      tip += "<div class='damntooltip'><div style='text-transform: uppercase; font-size: 1.1em;'>" + d.dam +"</div>";
+      tip += "<div class='tooldetail'>" + d.province + "</div>";
+      tip += "<div class='tooldetail'>" + d.river + "</div>";
+      tip += "<div class='yearlabel'><div class='toollabela'>This Week</div><div class='toollabelb'>" + d.this_week + "%</div></div>";
+      tip += "<div class='percentage'><div class='full' style='width: " + ((d.this_week * 150)/100) + "px; background: crimson;'></div></div>";
+      
+      tip += "<div class='yearlabel'><div class='toollabela'>This Week Last Year</div><div class='toollabelb'>" + d.last_year + "%</div></div>";
+      tip += "<div class='percentage'><div class='full' style='width: " + ((d.last_year * 150)/100) + "px;'></div>";
+      
+      tip += "</div>";
+      
+      
+      tip += "</div>";
+        
+        damtooltip.style("visibility", "visible")
+           
+
+            .html(tip)
+        
+        
+    })
+    .on("mouseout", function (d) { 
+        
+      
+        d3.select(this)
+            .style("cursor","default")
+            .style("fill", "teal")
+            .attr("r",5)
+        
+        d3.select(".info" + (d.rank-1))
+                        .style("background", "#fff")
+        
+        d3.select(".bars" + (d.rank-1))
+                    .style("stroke","none")
+        
+        
+         damtooltip.style("visibility", "hidden")           
+        
+        
+    })
+  
+ 
+  
+}
+        
+        
+        drawCircles();
+                
+                
+                
+                })
+
+        
+        
+        
+       
+        d3.csv("data/top_ten_dams.csv", function (topten) { 
+        
+        var toptenNoTotal = topten.filter( function (d) { return d.dam !== "Total"; })    
+        toptenNoTotal = toptenNoTotal.filter( function (d) { return d.dam !== "All Other Dams"; }) 
+        
+        var infowindow = "";
+        
+        toptenNoTotal.forEach( function (d,i) { 
+            infowindow += "<div class='infoid info" + i + "'><div class='row'><div class='rank' style='background: " + damColors[i] + ";'>" + d.rank + "</div>" + d.dam + " (" + d.province_code + ")</div>";
+            infowindow += "<div class='row2'>" + d.fsc + " million m<sup>3</sup></div></div>";
+            
+            
+        })
+        
+        
+        
+        
+        // ADD INFO WINDOW
+        d3.select(".map-info-window")
+            .append("foreignObject")
+            .html(infowindow)
+        
+        d3.selectAll(".infoid")
+            .on("mouseover", function () { 
+            
+              
+            
+                var thisclass = this.getAttribute("class");
+                thisclass = thisclass.replace("infoid info", "");
+            
+            
+                
+                
+            
+                d3.select(this) 
+                    .style("background","#CAD2D3")
+                
+                d3.select(".bars" + thisclass)
+                    .style("stroke","#000")
+                    .style("stroke-width", 1)
+                
+                d3.select(".dam" + thisclass)
+                    .style("fill", "crimson")
+                    .attr("r", 8)
+                
+                var d = topten[thisclass];
+                var tip = "";
+                      tip += "<div class='damntooltip'><div style='text-transform: uppercase; font-size: 1.1em;'>" + d.dam +"</div>";
+                      tip += "<div class='tooldetail'>" + d.province + "</div>";
+                      tip += "<div class='tooldetail'>" + d.river + "</div>";
+                      tip += "<div class='yearlabel'><div class='toollabela'>This Week</div><div class='toollabelb'>" + d.this_week + "%</div></div>";
+                      tip += "<div class='percentage'><div class='full' style='width: " + ((d.this_week * 150)/100) + "px; background: crimson;'></div></div>";
+
+                      tip += "<div class='yearlabel'><div class='toollabela'>This Week Last Year</div><div class='toollabelb'>" + d.last_year + "%</div></div>";
+                      tip += "<div class='percentage'><div class='full' style='width: " + ((d.last_year * 150)/100) + "px;'></div>";
+
+                      tip += "</div>";
+      
+      
+      
+
+            
+                damtooltip.style("visibility","visible")
+                    .html(tip)
+                
+                
+                
+                
+                
+            })
+            .on("mouseout", function () { 
+            
+                 var thisclass = this.getAttribute("class");
+                thisclass = thisclass.replace("infoid info", "");
+            
+                d3.select(this).style("background","none")
+                
+                    d3.select(".bars" + thisclass)
+                    .style("stroke","none")
+                    
+                    d3.select(".dam" + thisclass)
+                    .style("fill", "teal")
+                    .attr("r", 5)
+                    
+                    damtooltip.style("visibility","hidden")
+                  
+            })
+        
+        
+        })
+            
+        
+        
+        
+        // MAP HOVERS
+        
+//        d3.select(".dam1")
+//            .style("stroke","red")
+//        
+//        var damorigin = d3.select(".dam1")
+//        console.log(damorigin);
+//        
+//        var dam = d3.select('.dam1').node().getBoundingClientRect();
+//        console.log(dam);
+        
+//        d3.select("body")
+//            .append("foreignObject")
+//            .attr("class","maplabel")
+//            .style("left", (dam.left - 40) + "px" )
+//            .style("top", (dam.bottom) + "px")
+//            .html("<div class='maplabels'>label</div>")
+        
+        
+       
+
+    </script>
+    
+    <!-- DAMS INFO WINDOW -->
+    <script> 
+   
+        
+        d3.csv("data/top_ten_dams.csv", function (topten) { 
+        
+        
+        
+         var csvg2 = d3.select("#contribution2")
+            .append("svg")
+            .attr("width", 800)
+            .attr("height", 140)
+            .append("g")
+        
+        
+
+        ;
+        var top_ten = topten.filter( function (d) { return d.dam !== "Total"; });
+        x.domain([0,topten[11].fsc+10])
+        
+      
+        
+        xPos2 = 0; 
+        yPos2 = 10;
+        
+        top_ten.forEach( function (d,i) { 
+            
+            
+            
+            d.fsc = +d.fsc;
+            
+            
+            
+            csvg2.append("rect")
+                .attr("class", "barscont")
+                .attr("width", function () { return x(d.fsc); })
+                .attr("height", 20)
+                .attr("x", xPos2)
+                .attr("y", 60)
+                .style("fill", damColors[i])
+                .classed("bars" + i, true)
+                .on("mouseover", function () {
+                
+                    
+                     
+                
+                    d3.select(this)
+                        .style("stroke","#000")
+                        .style("stroke-width", 1)
+//                        .style("shape-rendering","crispEdges")
+                    
+                    d3.select(".info" + i)
+                        .style("background", "#CAD2D3")
+                    
+                    d3.select(".dam" + i)
+                        .style("fill", "crimson")
+                        .attr("r", 8)
+                    
+                    var d = topten[i];
+                        var tip = "";
+                          tip += "<div class='damntooltip'><div style='text-transform: uppercase; font-size: 1.1em;'>" + d.dam +"</div>";
+                          tip += "<div class='tooldetail'>" + d.province + "</div>";
+                          tip += "<div class='tooldetail'>" + d.river + "</div>";
+                          tip += "<div class='yearlabel'><div class='toollabela'>This Week</div><div class='toollabelb'>" + d.this_week + "%</div></div>";
+                          tip += "<div class='percentage'><div class='full' style='width: " + ((d.this_week * 150)/100) + "px; background: crimson;'></div></div>";
+
+                          tip += "<div class='yearlabel'><div class='toollabela'>This Week Last Year</div><div class='toollabelb'>" + d.last_year + "%</div></div>";
+                          tip += "<div class='percentage'><div class='full' style='width: " + ((d.last_year * 150)/100) + "px;'></div>";
+
+                          tip += "</div>";
+      
+      
+      
+
+                if(i !== 10) { 
+                damtooltip.style("visibility","visible")
+                    .html(tip)
+                }
+                    
+                })
+                .on("mouseout", function () { 
+                    d3.select(".info" + i)
+                        .style("background", "#fff")
+                    
+                    d3.select(this)
+                        .style("stroke","none")
+                    
+                    d3.select(".dam" + i)
+                        .style("fill", "teal")
+                        .attr("r", 5)
+                    
+                    damtooltip.style("visibility","hidden")
+                        
+                })
+            
+            
+               
+            csvg2.append("text")
+                .attr("x", function () { 
+                    return ((x(d.fsc))/2) + xPos2; 
+                })
+                .attr("y", yPos2)
+                .style("text-anchor","middle")
+                .text( function () { 
+//                    var dam = (d.dam).replace("Dam","");
+                    return d.percent + "%";
+                                    
+                                  })
+                .style("stroke", "none")
+                .style("fill","#000")
+                .style("font-size","0.7em")
+                .style("font-weight","bold")
+                
+                .attr("class","damlabels")
+                .style("shape-rendering", "crispEdges")
+                        
+
+               
+            
+            
+            
+             csvg2.append("line")
+                .attr("x1", function () { 
+                    return ((x(d.fsc))/2) + xPos2; 
+                })
+                .attr("x2", function () { 
+                    return ((x(d.fsc))/2) + xPos2; 
+                })
+                .attr("y1", yPos2 + 5 )
+                .attr("y2", 70)
+                .style("stroke", "#444")
+                .style("stroke-width", 1)
+                .style("shape-rendering", "crispEdges")
+             
+             csvg2.append("circle")
+                .attr("cx", function () { 
+                    return ((x(d.fsc))/2) + xPos2; 
+                })
+                .attr("cy", 70)
+                .attr("r", 2)   
+                .style("fill", "#444")
+             
+             if(i == 10) { 
+                 
+                 csvg2.append("text")
+                .attr("x", function () { 
+                    return ((x(d.fsc))/2) + xPos2; 
+                })
+                .attr("y", 100)
+                .style("text-anchor","middle")
+                .text( "All Other Dams")
+                .style("stroke", "none")
+                .style("fill","#000")
+                .style("font-size","0.8em")
+                .style("font-weight","bold")
+                
+                .attr("class","damlabels")
+                .style("shape-rendering", "crispEdges")
+             
+             }
+             
+          
+                
+             
+             if(yPos2 == 10){ yPos2 = 30; }
+            else { yPos2 = 10; }
+//            yPos2 += 10;
+             xPos2 += x(d.fsc);
+            
+        })
+        
+        
+        })
+        
+        
+        
+    </script>
+    
+ 
+
+<script src="interactive.js"></script>
+
+
+
+</body>
+</html>

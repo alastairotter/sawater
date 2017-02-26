@@ -1,0 +1,67 @@
+ /* Rainfall stats styles */
+#rainfall { 
+        
+        margin-left: auto;
+        margin-right: auto;
+        min-height: 100px;
+        width: 100%;
+
+        
+    }
+    
+.axis text {
+  font: 12px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: dodgerblue;
+  fill-opacity: .9;
+    
+}
+    
+.za, .world { 
+    fill: crimson;
+    stroke-width: 2;
+    stroke: crimson;
+    shape-rendering: crispEdges;
+}
+
+.world { 
+    fill: #000;
+    stroke: #000;
+}
+    
+
+
+.x.axis path {
+  display: none;
+}
+
+label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+    
+.av_label{ 
+    stroke: none;
+    fill: #000; 
+/*    text-transform: uppercase;*/
+/*    font-size: 14px;*/
+    font-size: 80%;
+}
+    
+.chart_label{ 
+    stroke: none;
+    fill: gray; 
+    font-size: 11px;
+}
+    
+/* Rainfall stats styles */
