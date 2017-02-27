@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="styles_keydams.css">
     <link rel="stylesheet" href="styles_map.css">
     <script src="data/top_ten_dams_json.js"></script>
+    <script src="data/alldams_ages.json"></script>
     <script src="data/drainageareas.js"></script>
     <script src="lib/d3.v3.min.js"></script>
     <script src="liquidFillGauge.js"></script>
@@ -255,6 +256,13 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
        <div class="content-title">SA's Largest Dams</div>
        
        <div id="map" style="width: 100%; min-height: 200px;"></div>
+   </div>
+   
+   
+   <div class="content-box">
+       <div class="content-title">SA's Oldest Dams</div>
+       
+       <div id="map2" style="width: 100%; min-height: 200px;"></div>
    </div>
    
 
@@ -1242,7 +1250,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
         }
         else { 
             var mapheight = mapwidth * 0.6;
-            var zoom = 5;
+            var zoom = 6;
         }
         
         $("#map").height(mapheight);
@@ -1272,7 +1280,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
             
         function onEachFeature(feature, layer) {
             layer.on({
-//                mouseover: highlightFeature,
+                mouseover: highlightFeature,
 //                mouseout: resetHighlight,
                 click: highlightFeature
 //                mousemove: tooltipMove
@@ -1281,18 +1289,24 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     
     
     
-    var mymap = L.map('map').setView([-28.7350938,25.3868996], zoom);
+    var mymap = L.map('map').setView([-30.550938,25.3868996], zoom);
+        
+       L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.{ext}', {
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	subdomains: 'abcd',
+	minZoom: 0,
+	maxZoom: 20,
+	ext: 'png'
+}).addTo(mymap);
         
 
-        
-
-        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 20,
-        id: 'alastairotter.07i8pfkj',
-        accessToken: 'pk.eyJ1IjoiYWxhc3RhaXJvdHRlciIsImEiOiJjaWc1NjM1dGYwYXV6djJtNjc5dGNqZThrIn0.SWLrLlYJWBdLvyIURec3FA'
-
-        }).addTo(mymap);
+//        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+//        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+//        maxZoom: 20,
+//        id: 'alastairotter.07i8pfkj',
+//        accessToken: 'pk.eyJ1IjoiYWxhc3RhaXJvdHRlciIsImEiOiJjaWc1NjM1dGYwYXV6djJtNjc5dGNqZThrIn0.SWLrLlYJWBdLvyIURec3FA'
+//
+//        }).addTo(mymap);
         
         mymap.scrollWheelZoom.disable();
     
@@ -1326,7 +1340,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
 
 		pointToLayer: function (feature, latlng) {
 			return L.circleMarker(latlng, {
-				radius: 6,
+				radius: 10,
 				fillColor: "Crimson",
 				color: "#fff",
 				weight: 1,
@@ -1344,6 +1358,142 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
         
     </script>
     <!-- END LARGEST DAMS -->
+    
+    
+    
+    
+    
+    
+    <!-- OLDEST DAMS -->
+    <script>
+        
+        var oldest = 136; 
+        var ageColors = ['#ffffd9','#edf8b1','#c7e9b4','#7fcdbb','#41b6c4','#1d91c0','#225ea8','#253494','#081d58'];
+        
+        var mapwidth = $("#map2").width();
+        
+        if(mapwidth < 400) { 
+            var mapheight = mapwidth ; 
+            var zoom = 4;
+        }
+        else if(mapwidth < 800) { 
+            var mapheight = mapwidth ; 
+            var zoom = 6;
+        }
+        else { 
+            var mapheight = mapwidth * 0.6;
+            var zoom = 5;
+        }
+        
+        $("#map2").height(mapheight);
+        
+        
+        
+         
+    
+        function highlightFeature(e) { 
+            
+            var layer = e.target;
+            
+            console.log(e.target.feature.properties);
+            var drainage = e.target.feature.properties.region;
+            d3.select("#feature-" + drainage).style("fill","dodgerblue");
+            
+            var popupContent = "<div class='popup'><div class='popuptitle'>" + e.target.feature.properties.dam + "</div>";
+            popupContent += "Year completed: " + e.target.feature.properties.year_completed;
+            popupContent += "<br />" + e.target.feature.properties.age + " years old";
+            popupContent += "</div>";
+
+		layer.bindPopup(popupContent);
+            this.openPopup();
+        
+        }
+        
+        
+            
+        function onEachFeature(feature, layer) {
+            layer.on({
+//                mouseover: highlightFeature,
+//                mouseout: resetHighlight,
+                click: highlightFeature
+//                mousemove: tooltipMove
+            });
+        }
+    
+    
+    
+    var mymap2 = L.map('map2').setView([-28.7350938,25.3868996], zoom);
+        
+
+  L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.{ext}', {
+	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+	subdomains: 'abcd',
+	minZoom: 0,
+	maxZoom: 20,
+	ext: 'png'
+}).addTo(mymap2);
+
+//        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+//        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+//        maxZoom: 20,
+//        id: 'alastairotter.07i8pfkj',
+//        accessToken: 'pk.eyJ1IjoiYWxhc3RhaXJvdHRlciIsImEiOiJjaWc1NjM1dGYwYXV6djJtNjc5dGNqZThrIn0.SWLrLlYJWBdLvyIURec3FA'
+//
+//        }).addTo(mymap2);
+        
+        mymap2.scrollWheelZoom.disable();
+    
+    // ADD DRAINAGE AREAS
+//        
+//    var geoJsonLayer = L.geoJson(drainage, {
+//        style: function (feature) {
+//            return { 
+//                weight: 1,
+//                fillOpacity: 0.5,
+//                fillColor:"none",
+//                color:"none"
+//                
+//            }
+//        }
+//        
+//    }).addTo(mymap);
+//        
+//        geoJsonLayer.eachLayer(function (layer) {
+//    layer._path.id = 'feature-' + layer.feature.properties.id;
+//});
+        
+    
+    L.geoJson(damAges, {
+
+		style: function (feature) {
+			return feature.properties && feature.properties.style;
+		},
+
+		onEachFeature: onEachFeature,
+
+		pointToLayer: function (feature, latlng) {
+            var col = Math.round((feature.properties.age/136)*10); 
+            
+			return L.circleMarker(latlng, {
+				radius:4,
+				fillColor: ageColors[col],
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 1,
+                class: "damPoint"
+			});
+		}
+	}).addTo(mymap2);
+        
+    
+        
+        
+   
+                 
+        
+    </script>
+    <!-- END OLDEST DAMS -->
     
     
     
