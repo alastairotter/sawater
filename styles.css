@@ -88,7 +88,7 @@ a {
     height: auto;
     background: #fff;
     font-size: 80%;
-    padding: 10% 5%;
+    padding: 2% 5%;
 }
 
 .content-box-trans { 
@@ -121,9 +121,9 @@ a {
 
 .content-title { 
     color: #000;
-    font-size: 150%;
+    font-size: 120%;
     text-align: left;
-    padding: 0 0 2% 0;
+    padding: 0 0 0% 0;
     font-weight: bold;
     
     
@@ -186,7 +186,7 @@ a {
     }
     
     .content-box { 
-        padding: 4% 10%;
+        padding: 1% 10%;
         font-size: 90%;
     }
     
@@ -213,7 +213,7 @@ a {
 
 @media screen and (min-width: 1400px) {
     .content-box { 
-        padding: 4% 20%;
+        padding: 1% 20%;
         font-size: 90%;
     } 
     
