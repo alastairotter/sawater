@@ -218,6 +218,13 @@
 <p>
 One of the features of the 2016/2017 drought, particularly in the centre and the north of the country, were the extreme weather conditions. In early November 2016 when the Vaal dam was nearing its lowest levels water authorities made a decision to release water from the Sterkfontein dam tosupplement the Vaal and avert a major problem. At the same time parts of Gauteng were experiencing extreme flooding conditions. In the early part of November 2016 major floods swept parts of the province causing significant infrastructure damage and even deaths. 
 </p>
+<p>The primary reason that parts of the country could be both flooded and enduring water restictions are the various catchment areas that fill the major dams in the country. In the case of the Vaal dam and Gauteng the issue is quickly apparent is you look at the drainage area for the Vaal dam. Rain over this area largely ends up in the larger dams of the Free State, including the Vaal dam.
+ </p>
+ <div style="100%; text-align: center;">
+     <img src="drainage.png">
+     
+ </div>
+<p>Johannesburg sits almost squarely on the northern boundry of this catchment area. Sandton and Pretoria sit north of the area. So while heavy rains over these areas towns might suggest an improvement in the state of the Vaal dam in reality those rains have less of an impact on the levels of the Vaal dam than do rains further south and south-west of Johannesburg and Gauteng. </p>
 
        
    </div>
@@ -261,6 +268,28 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
    
    <div class="content-box">
        <div class="content-title">SA's Oldest Dams</div>
+       <p>Twelve of South Africa’s dams are more than 100 years old as of 2017. The Molten sam in the Western Cape is the oldest at 136 years old closely followed by Vanwyksvlei dam in the Northern Cape at 133 years old.</p> 
+
+<p>Of the dams that are more than 100 years old seven are unsurprisingly in the Western Cape. The Eastern Cape’s oldest dam is the Bongolo dam, the Free State’s is the Koppies dam and Gauteng’s Emmarentia dam rounds out the list at 105 years of age. </p>
+
+<p>The average age of South Africa’s dams is 53 years, although the media is slightly younger at 47 years (ie. half of SA’s dams are less than 47 years of age, with the other half older than that.)</p>
+
+<p>At the other end of the scale the country’s newest dam is the De Hoop dam in Limpopo. That was officially opened in March 2014 making it three year old. Slightly older than that is the Vallkop dam at seven years and the Berg River dam at ten years. </p>
+
+<p>Looking at the country’s largest dams they range between 78 (Vaal dam) and 15 (Mohale dam) years of age: 
+<ol>
+    <li>Gariep Dam: 46 years old </li>
+<li>Vanderkloof Dam: 40 years old</li>
+<li>Sterkfontein Dam: 37 years old</li>
+<li>Vaal Dam: 78 years old</li>
+<li>Pongolapoort Dam: 44 years old</li>
+<li>Katse Dam: 21 years old</li>
+<li>Bloemhof Dam: 47 years old</li>
+<li>Mohale Dam: 15 years old</li>
+<li>Theewaterskloof Dam: 39 years old</li>
+<li>Heyshope Dam: 34 years old</li>
+       </ol></p>
+
        
        <div id="map2" style="width: 100%; min-height: 200px;"></div>
    </div>
@@ -1237,7 +1266,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     
     <!-- LARGEST DAMS -->
     <script>
-        
+        var lastDrainage = "";
         var mapwidth = $("#map").width();
         
         if(mapwidth < 400) { 
@@ -1265,15 +1294,33 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
             
             console.log(e.target.feature.properties);
             var drainage = e.target.feature.properties.region;
-            d3.select("#feature-" + drainage).style("fill","dodgerblue");
+            lastDrainage = drainage;
+            console.log("lastDrainage: " + lastDrainage);
+            
+//            d3.select("#feature-" + drainage).style("fill","dodgerblue");
             
             var popupContent = "<div class='popup'><div class='popuptitle'>" + e.target.feature.properties.dam + "</div>";
-            popupContent += "" + e.target.feature.properties.province;
+            popupContent += "" + e.target.feature.properties.fsc + " million cubic meters";
             popupContent += "</div>";
+            
+            
+            var customOptions =
+                {
+                'maxWidth': '800',
+                'width': '500',
+                'className' : 'popupCustom'
+                }
+            
+            
 
-		layer.bindPopup(popupContent);
+		layer.bindPopup(popupContent, customOptions);
             this.openPopup();
         
+        }
+        
+        function resetHighlight(e) { 
+           
+            
         }
         
         
@@ -1281,8 +1328,8 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
         function onEachFeature(feature, layer) {
             layer.on({
                 mouseover: highlightFeature,
-//                mouseout: resetHighlight,
-                click: highlightFeature
+                mouseout: resetHighlight,
+//                click: highlightFeature
 //                mousemove: tooltipMove
             });
         }
@@ -1291,7 +1338,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     
     var mymap = L.map('map').setView([-30.550938,25.3868996], zoom);
         
-       L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.{ext}', {
+       L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.{ext}', {
 	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 	subdomains: 'abcd',
 	minZoom: 0,
@@ -1313,11 +1360,30 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     // ADD DRAINAGE AREAS
         
     var geoJsonLayer = L.geoJson(drainage, {
+        
+        
         style: function (feature) {
+            
+            if(feature.properties.id === "C") { 
+                var col = "Crimson";
+            }
+            else if(feature.properties.id === "W") { 
+                var col = "green";
+            }
+            else if(feature.properties.id === "D") { 
+                var col = "dodgerblue";
+            }
+            else if(feature.properties.id === "H") { 
+                var col = "orangered";
+            }
+            
+            else { 
+                var col = "none";
+            }
             return { 
                 weight: 1,
-                fillOpacity: 0.5,
-                fillColor:"none",
+                fillOpacity: 0.3,
+                fillColor: col,
                 color:"none"
                 
             }
@@ -1339,9 +1405,26 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
 		onEachFeature: onEachFeature,
 
 		pointToLayer: function (feature, latlng) {
+            
+            if(feature.properties.region === "C") { 
+                var col = "crimson";
+                
+            }
+            else if(feature.properties.region === "W") { 
+                var col = "green";
+            }
+            else if(feature.properties.region === "D") { 
+                var col = "dodgerblue";
+            }
+            else if(feature.properties.region === "H") { 
+                var col = "orangered";
+            }
+            else { 
+                var col = "yellow";
+            }
 			return L.circleMarker(latlng, {
 				radius: 10,
-				fillColor: "Crimson",
+				fillColor: col,
 				color: "#fff",
 				weight: 1,
 				opacity: 1,
@@ -1373,15 +1456,15 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
         var mapwidth = $("#map2").width();
         
         if(mapwidth < 400) { 
-            var mapheight = mapwidth ; 
+            var mapheight = mapwidth * 0.6; 
             var zoom = 4;
         }
         else if(mapwidth < 800) { 
-            var mapheight = mapwidth ; 
+            var mapheight = mapwidth * 0.6; 
             var zoom = 6;
         }
         else { 
-            var mapheight = mapwidth * 0.6;
+            var mapheight = mapwidth * 0.45;
             var zoom = 5;
         }
         
@@ -1404,7 +1487,16 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
             popupContent += "<br />" + e.target.feature.properties.age + " years old";
             popupContent += "</div>";
 
-		layer.bindPopup(popupContent);
+            
+            var customOptions =
+                {
+                'maxWidth': '800',
+                'width': '500',
+                'className' : 'popupCustom'
+                }
+            
+            
+		layer.bindPopup(popupContent, customOptions);
             this.openPopup();
         
         }
@@ -1425,12 +1517,8 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     var mymap2 = L.map('map2').setView([-28.7350938,25.3868996], zoom);
         
 
-  L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.{ext}', {
-	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-	subdomains: 'abcd',
-	minZoom: 0,
-	maxZoom: 20,
-	ext: 'png'
+  L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 }).addTo(mymap2);
 
 //        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
@@ -1475,9 +1563,10 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
             var col = Math.round((feature.properties.age/136)*10); 
             
 			return L.circleMarker(latlng, {
-				radius:4,
+				radius:5,
 				fillColor: ageColors[col],
 				color: "#000",
+                stroke: 5,
 				weight: 1,
 				opacity: 1,
 				fillOpacity: 1,
