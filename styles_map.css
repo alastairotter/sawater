@@ -63,3 +63,8 @@
 .popupCustom .leaflet-popup-tip { 
     display: none;
 }
+
+
+.leaflet-container {
+    background: #fff;
+}

@@ -20,6 +20,10 @@
         visibility: hidden;
         
     }
+
+.droplet { 
+    fill: gray;
+}
          
          
           .damnav { 
@@ -34,7 +38,8 @@
        .dam { 
            float: left;
            padding: 5px 10px;
-           border: solid 1px gray;
+           border: solid 1px #eee;
+           font-size: 80%;
            
            color:gray;
            margin-right: 2%;
@@ -58,8 +63,8 @@
            
            width: 90%;
            
-           line-height: 130%;
-           color: #828282;
+           line-height: 140%;
+           color: #545454;
            margin-left: 15px;
        }
          

@@ -21,14 +21,14 @@
 }
 
 .bar {
-  fill: dodgerblue;
-  fill-opacity: .9;
+  fill: gray;
+  fill-opacity: .8;
     
 }
     
 .za, .world { 
     fill: crimson;
-    stroke-width: 2;
+    stroke-width: 1.5;
     stroke: crimson;
     shape-rendering: crispEdges;
 }
