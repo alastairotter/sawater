@@ -1,1 +1,5 @@
 Annual rainfall averages: World Bank http://data.worldbank.org/indicator/AG.LND.PRCP.MM
+Cover ostrich photo: https://pixabay.com/en/ostrich-south-africa-watering-place-629024/
+Theewaterskloof photos: Greg Gordon
+Dam levels, draingage areas: South African Department of Water and Santation
+Water level gauges: Based on Curtis Bratton's work http://bl.ocks.org/brattonc/5e5ce9beee483220e2f6

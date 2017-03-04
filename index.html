@@ -10,12 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="lib/font-awesome-4.6.3/css/font-awesome.css">
+<!--    <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans" rel="stylesheet">-->
     <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,700|Slabo+27px" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">
+<!--    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700" rel="stylesheet">-->
+<!--    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">-->
+<!--    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700,900" rel="stylesheet">
 
-    <link type="text/css" href="https://cdn.jotfor.ms/before-after/before-after.min.css" rel="stylesheet">
+<!--    <link type="text/css" href="https://cdn.jotfor.ms/before-after/before-after.min.css" rel="stylesheet">-->
 
 
     <link rel="stylesheet" href="lib/leaflet/leaflet.css">
@@ -28,23 +30,31 @@
     <script src="data/top_ten_dams_json.js"></script>
     <script src="data/alldams_ages.json"></script>
     <script src="data/drainageareas.js"></script>
+    <script src="data/wc_dams.json"></script>
+    <script src="data/wc_drainage.js"></script>
     <script src="data/sa.json"></script>
     <script src="lib/d3.v3.min.js"></script>
     <script src="liquidFillGauge.js"></script>
     <script src="lib/queue.v1.min.js"></script>
-    <script src="../lib/jquery.min.js"></script>
+    <script src="lib/jquery.min.js"></script>
+
 
 
 </head>
 
 <body>
- &nbsp; <span class="width screen"> x </span><span class="height screen"></span>
 <script>
-    $(".width").text(window.innerWidth + " X ")
-    $(".height").text(window.innerHeight)
-    
-</script>
+    console.log(window.innerWidth);
+    </script>
+
 <div class="tooltip">Tooltip</div>
+
+<!--    <div class="info">&nbsp;</div>-->
+   
+    <div class="info-pane-share">
+    <div class="addthis_inline_share_toolbox"></div>
+    
+     </div>
 
 <div class="main-title">
  South Africa's Water Challenge
@@ -53,7 +63,9 @@
 </div>
  
 
- <div class="mainblurb">PART 1<br />SA's Water Storage Infrastructure </div>
+    <div class="mainblurb"><span class="blurb-part">PART 1</span><br />Water Storage Infrastructure </div>
+     <div class="info-pane">research & programming: <span class="bold"><a href="http://twitter.com/alastairotter">alastair otter &nbsp; <i class="fa fa-twitter" aria-hidden="true"></i></a></span><br />
+         a <span class="bold"><a href="http://mediahack.co.za">media hack collective</a></span> project</div>
 
 
 
@@ -62,17 +74,17 @@
 <div class="content-box">
 <!--   <div class="content-title">Scarce Resource</div>-->
    <p>
-       Over the past year South Africa has experienced one of the most extreme droughts in recent history. The 2015/2016 drought was considered by many experts to be the worst drought in almost 25 years. The 2016/2017 drought, however, looks likely to be even worse as most dam levels dropped below those of 2015/2016 and some provinces such as the Western Cape are still firmly in the grip of the drought. 
+       Over the past year South Africa has experienced one of the most extreme droughts in recent history. While the 2015/2016 drought was considered by many experts <a href="https://africacheck.org/2016/02/03/frequently-asked-questions-about-south-africas-drought/">to be the worst drought in almost 25 years</a> the 2016/2017 drought looks likely to be rated even worse. During the 2016/2017 drought seasons dam levels in most provinces dropped below those of 2015/2016 and some provinces, such as the Western Cape, are still firmly in the grip of the drought. 
        
    </p>
    <p>One of the major causes of the extreme droughts over the past few years has been the impact of El Niño, a weather phenomenon in which the water surface temperature in the eastern pacific is warmer than usual, causing warmer, drier temperatures in South Africa. </p>
-   <p>El Niño is a cyclical weather phenomenon and so will eventually make way for La Nina, with the opposite effect of El Niño. And while that will bring some relief for the country, it doesn't change the fact that South Africa is a water scarce country which is extremely vulnerable to climate changes without adequate planning. </p>
+   <p>El Niño is a cyclical weather phenomenon and so will eventually make way for La Nina, with the opposite effect of El Niño. And while that will bring some relief for the country, it doesn't change the fact that South Africa is a water scarce country which is extremely vulnerable to climate events. </p>
    
-   <p>This is part one of a, hopefully, multi-part series on the various aspects of South Africa's water supply management. This part will look primarily at the broad infrastructure that makes us SA's water strategy as well as touching on the effect of the recent drought on this infrastructure. </p>
+   <p style="font-style: italic;">This is part one of a planed multi-part series on South Africa's water supply management and strategy. Here we will look at the country's water infrastructure and some of the affects of the recent drought.  </p>
    
    <div class="content-title">Planning for scarcity</div>
    
-    <p>South Africa is a water-scarce country with a rainfall average well below the world average. According to the World Bank's database of <a href="http://data.worldbank.org/indicator/AG.LND.PRCP.MM">annual global rainfall averages</a> South Africa receives an average of just 495mm of rain a year. This is almost half of the global average of 990mm and significantly less than the rain received by Colombia which tops the list at 3,240mm a year. 
+    <p>South Africa is a water-scarce country with annual rainfall well below the world average. According to the World Bank's database of <a href="http://data.worldbank.org/indicator/AG.LND.PRCP.MM">annual global rainfall averages</a> South Africa receives an average of just 495mm of rain a year. This is almost half of the global average of 990mm and significantly less than the rain received by Colombia which tops the list at 3,240mm a year. 
                 
                    
 
@@ -85,7 +97,8 @@
 
 <div class="content-box">
 <!--    <div class="content-title">Saving For Lean Times</div>-->
-    <p>Receiving just a fraction of the annual rainfall most other countries in the world do South Africa is heavily reliant on its ability to capture and store water for leaner times. It does this by maintaining a network of storage dams across the county. At this time the Department of Water and Sanitation manages a total of 210 dams that make up the backbone of the country's water management strategy. While the majority of these dams are located in the Eastern and Western Cape it is provinces like the Free State that play the largest role in managing the water risk the country faces.
+    <p>Receiving so little rain South Africa is heavily reliant on its ability to capture and store water for leaner times. It does this by maintaining a network of storage dams and reservoirs across the county. The Department of Water and Sanitation manages a total of 210 dams that make up the backbone of the country's water management strategy.</p>
+    <p>The majority of these dams are located in the Eastern and Western Cape but it is the larger dams in provinces such as the Free state that play the largest role in managing the water risk the country faces.
     </p>
     <p>In the chart below each circle represents one of these 210 dams.  </p> 
     
@@ -136,7 +149,7 @@
 <div class="content-box">
    <div class="content-title">The State of Dam Storage: November 2015 to February 2017</div>
    
-    <p>The Department of Water and Sanitation is charged with monitoring the state of listed dams in South Africa. The department releases weekly data on the levels of all dams and looking through this data it is possible to build a picture of how the drought rolls through the country. The charts below represent the provincial levels for dams in November 2015, November 2016 and February 2017 (collected 27 February 2017).</p>
+    <p>Aspart of its monitoring processes the Department of Water and Sanitation releases weekly data on the levels of all listed dams in SouthAfrica. Looking through this data it is possible to build a picture of how the drought rolled through the country. The charts below represent the provincial levels for dams in November 2015, November 2016 and February 2017 (collected 27 February 2017).</p>
     
 
 
@@ -198,20 +211,20 @@
  <div class="content-box">
     
      
-     <p><span style="font-weight: bold;">Note:</span> These are water levels for dams located in each province, not necessarily theamount of water available to a provine. Gauteng, for example, receives the bulk of its water from the Free State. So while its dams were relatively full througout the drought it suffered from the depleted Free State Dams</p>
+     <p style="font-style: italic;"><span style="font-weight: bold;">Note:</span> These are water levels for dams located in each province, not necessarily the amount of water available to a province. Gauteng, for example, receives the bulk of its water from the Free State. So while its dams were relatively full througout the drought it suffered from the depleted Free State Dams.</p>
     
 
-<p>As we can see from the above the 2016/2017 drought season intially affected the inland and mostly more northern provinces. The peak of the drought period for most of these provinces was in November 2016. At this time the Limpopo and Mpumalanga dam levels were down between 22 - 26% when compared with November 2015 and the Free State dams were down 17% compared to the previous year. The low levels of these dams affected not only the province they were located in but also had a major impact on the major metropolitan areas in Gauteng. By mid-November 2016 the Vaal dam, the key supplier of water to Gauteng cities, was perilously low at around 26% of its full storage capacity.</p> 
+<p>As we can see from the above the 2016/2017 drought season intially affected the inland and more northern provinces. The worst of the drought season for most of these provinces was between November and December 2016. At this time the Limpopo and Mpumalanga dam levels were down between 22 and 26% when compared with November 2015 and the Free State dams were down 17% compared to the previous year. The low levels of these dams affected not only the province they were located in but also had a major impact on the major metropolitan areas in Gauteng. By mid-November 2016 the Vaal dam, the key supplier of water to Gauteng cities, was perilously low at 26% of its full storage capacity.</p> 
     
     <p>On 7 November 2016 water authorities began to release water from the Sterkfontein dam to begin replenishing the Vaal dam. At the time the Sterkfontein dam was almost 90% full.  </p>
     
      <p>Strong rains, and even floods, in the latter months of 2016 and early 2017 have now replenished the major Free State dams and some have even exceeded their full capacity. On 26 February 2017 <a href="http://www.enca.com/south-africa/vaal-dams-sluice-gates-opened">sluice gates at at the Vaal dam were opened and a flood warning was issued</a> to residents in the area as the dam reached full capacity. </p>
      
-     <p>Further south the Western Cape is still in the grip of the drought. In November 2016 the province's dams were lower than the same time the previous year but not as much as many other provinces. Western Cape dams were down 9% inNovember 2016 compared with November 2015. Free State dams, in comparison, were down almost double that at 17% for the same period. </p>
+     <p>Further south the Western Cape is still in the grip of the drought. In November 2016 the province's dams were lower than the same time the previous year but not as much as many other provinces. Western Cape dams were down 9% in November 2016 compared with November 2015. Free State dams, in comparison, were down almost double that at 17% for the same period. </p>
      
-      <p>By February, however, the situation was significantly reversed. While the up country dams were largely replenished the Western Cape dams continued to fall. Athe time of writing (28 February 2017) Western Cape dams levels are down to just 32% of their storage capacity, almost half of what they were in November 2016 and a third of what they were in November 2015. </p>
+      <p>By February, however, the situation was significantly reversed. While the up country dams were largely replenished the Western Cape dams continued to fall. At he time of writing (3 March 2017) Western Cape dam levels are down to just 33% of their storage capacity, almost half of what they were in November 2016 and a third of what they were in November 2015. </p>
        <p>
-      The province's largest dam, Theewaterskloof, which accounts for more than 25% of the WesternCape's total water storage now sits at 27%, down from 42% last year. </p>
+      The province's largest dam, Theewaterskloof, which accounts for more than 25% of the Western Cape's total water storage now sits at 27%, down from 42% last year. </p>
      
      
        
@@ -224,13 +237,28 @@
     
     <div class="content-box">
     
-    <div class="content-title">Theewaterskloof Dam</div><p>
+    <p>
     
   
     <div class="slider">  
-<iframe frameborder="0" class="juxtapose" width="100%" height="450" src="https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=33167b30-fdd4-11e6-8376-0edaf8f81e27"></iframe>
+    <div class="content-title" style="margin-bottom: 10px;">Theewaterskloof Dam</div>
+<iframe frameborder="0" class="juxtapose" width="100%" height="773" src="https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=c5242692-00c9-11e7-940c-0edaf8f81e27"></iframe>
+   <span style="font-style: italic;">Photos: Greg Gordon</span>
     </div>
-        <span style="font-style: italic;">Photos: Greg Gordon</span>
+      
+      <script>
+        var slider = $(".slider").width();
+        $(".juxtapose").height(slider * 0.52);
+        </script>
+       
+       <div class="static">
+            <div class="static-title">Theewaterskloof Dam July 2014</div>
+           <img src="slider/jul2014_new.jpeg" style="width: 100%;">
+           <div class="static-title">Theewaterskloof Dam January 2017</div>
+           <img src="slider/jan2017_new.jpeg" style="width: 100%;">
+          <span style="font-style: italic;">Photos: Greg Gordon</span> 
+       </div>
+        
     
         </p>
     
@@ -250,21 +278,23 @@
 -->
  
 <!--  <div class="content-box-trans trans2"></div>-->
+  
+  
    <div class="content-box">
        
        <div class="content-title">Extremes</div>
 <p>
-One of the features of the 2016/2017 drought, particularly in the centre and the north of the country, were the relatively extreme weather conditions. In early November 2016, while the Vaal dam was nearing its lowest levels and water authorities were releasing water from Sterkfontein to supplement the dam, large parts of Gauteng experienced devastating flooding. And water restrictions remained in place well into the early part of 2017.
+One of the features of the recent drought, particularly in the centre and the north of the country, was the relatively extreme weather conditions. In early November 2016, while the Vaal dam was nearing its lowest levels and water authorities were releasing water from Sterkfontein to supplement the dam, large parts of Gauteng experienced devastating flooding. And water restrictions remained in place well into the early part of 2017.
 </p>
-<p>The primary reason that parts of the country could be both flooded and enduring water restrictions are the various catchment areas that fill the major dams in the country. In the case of the Vaal dam and Gauteng the issue is quickly apparent is you look at the drainage area for the Vaal dam. Rain over this area largely ends up in the larger dams of the Free State, including the Vaal dam.
+<p>The primary reason that parts of the country could both have water restrictions and floods at the same time is is related to the various drainage areas (catchment areas) that serve each of the major dams. Looking at the Vaal dam for example: 
  </p>
  <div style="100%; text-align: center;">
      <img src="drainage.png" style="max-width: 100%;">
      
  </div>
-<p>Johannesburg sits on the very northern border of this catchment area. Sandton and Pretoria sit north of the area. So while heavy rain over these areas might suggest an improvement in the drought situation the reality is that rains further south and south-west of Johannesburg and Gauteng are what really matter. </p>
+<p>The Vaal dam is located in the C drainage region (the light pink area). Johannesburg sits on the very northern border of this catchment area, while Sandton and Pretoria sit north of the area. So while heavy rain over these areas might suggest an improvement in the drought situation the reality is that rains further south and south-west of Johannesburg and Gauteng are what really matter. </p>
        
-       <p>Similarly, in the Western Cape the Theewaterskloof dam relies on good rainfall north of the Hottentots Holland mountain range for replenishment. So rain in the Cape Town city centre is not a reliable indicator of general improvement. </p>
+       <p>Similarly, in the Western Cape the Theewaterskloof dam relies on good rainfall north of the Hottentots Holland mountain range for replenishment. So rain in the Cape Town city centre is not a reliable indicator of general improvement. Although, as we see later, the province's other major dams are a lot closer toCape Town than the Theewaterskloof dam.  </p>
 
        
    </div>
@@ -294,56 +324,71 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
   
   
 -->
-  
+  <div class="content-box">
+      <div class="content-title">Catchment areas</div>
+   
+   South Africa is broadly divided into 22 "drainage" regions. They're labelled from A - X and broadly correspond to the countours of the land. The map below shows the ten largest dams in South Africa and their draingage areas. As can be seen the Bloemhof, Vaal and Sterkfontein dams rely on good rains over most of the Free State. The Vanderkloof and the Gariep dams, the two largest in the country, are largely replenished by rains over the Northern Cape and Lesotho. 
+   
+    </div>
   
   
   
    
-   <div class="content-box">
+   <div class="content-box topdams">
       
-       
+       <div class="content-title small">South Africa's ten largest dams and their drainage areas</div>
        <div id="map" style="width: 100%; min-height: 200px;"></div>
    </div>
    
-   <div class="content-box">
-   
-   South Africa is broadly divided into 22 "drainage" regions. They're labelled from A - X and broadly correspond to the countours of the country. The map above shows the ten largest dams in South Africa and their draingage areas. 
-   
+   <div class="content-box topdams-static">
+        <div class="content-title small">South Africa's ten largest dams and their drainage areas</div>
+        <img src="images/topten.png" width="100%" style="border: solid 1px gray;">
     </div>
    
-   
-<!--
    <div class="content-box">
-       <div class="content-title">SA's Oldest Dams</div>
-       <p>Twelve of South Africa’s dams are more than 100 years old as of 2017. The Molten sam in the Western Cape is the oldest at 136 years old closely followed by Vanwyksvlei dam in the Northern Cape at 133 years old.</p> 
-
-<p>Of the dams that are more than 100 years old seven are unsurprisingly in the Western Cape. The Eastern Cape’s oldest dam is the Bongolo dam, the Free State’s is the Koppies dam and Gauteng’s Emmarentia dam rounds out the list at 105 years of age. </p>
-
-<p>The average age of South Africa’s dams is 53 years, although the media is slightly younger at 47 years (ie. half of SA’s dams are less than 47 years of age, with the other half older than that.)</p>
-
-<p>At the other end of the scale the country’s newest dam is the De Hoop dam in Limpopo. That was officially opened in March 2014 making it three year old. Slightly older than that is the Vallkop dam at seven years and the Berg River dam at ten years. </p>
-
-<p>Looking at the country’s largest dams they range between 78 (Vaal dam) and 15 (Mohale dam) years of age: 
-<ol>
-    <li>Gariep Dam: 46 years old </li>
-<li>Vanderkloof Dam: 40 years old</li>
-<li>Sterkfontein Dam: 37 years old</li>
-<li>Vaal Dam: 78 years old</li>
-<li>Pongolapoort Dam: 44 years old</li>
-<li>Katse Dam: 21 years old</li>
-<li>Bloemhof Dam: 47 years old</li>
-<li>Mohale Dam: 15 years old</li>
-<li>Theewaterskloof Dam: 39 years old</li>
-<li>Heyshope Dam: 34 years old</li>
-       </ol></p>
-
-       
-       <div id="map2" style="width: 100%; min-height: 200px;"></div>
-   </div>
    
--->
-
+   Looking further south the City of Cape Town's water supply system is built around six primary dams, the largest of which is the Theewaterskloof dam east of Cape Town. The Theewaterskloof dam is dependent on good rains in the Hottentots Holland catchment area while the other dams in the system are in the drainage zone around Cape Town. At the time of writing most of the dams in the Western Cape were between 32% and 38% of their full capacity. The Theewaterskloof dam was at 27%. 
    
+    </div>
+    
+    <div class="content-box wcdams">
+       <div class="content-title small">Cape Town's water supply dams and their drainage areas</div>
+        <div id="map2" style="width: 100%; min-height: 200px;"></div>
+    </div>
+    
+    <div class="content-box wcdams-static">
+        <div class="content-title small">Cape Town's water supply dams and their drainage areas</div>
+        <img src="images/topwc.png" width="100%" style="border: solid 1px gray;">
+    </div>
+    
+    
+    <div class="content-box" style="font-style: italic;">
+        <p>A complete water management system and strategy is a lot more than just the dams and the water they are able to hold. In either future versions of this particular piece, or in entirely new versions, I will look at other aspects of the water supply system.</p>
+        
+        <p>
+            <span style="font-weight: 700;">Comments, thoughts, suggestions?</span><br/>
+            The data for this piece was collected from various sources (see below). The interpretation of that data is entirely mine. Therefore, any errors or ommissions are mine. If you have a suggestion or a comment please let me know via <a href="mailto:alastair@mediahack.co.za">email</a> or via <a href="http://twitter.com/alastairotter">Twitter</a>.
+        </p>
+        
+         <p>
+            <span style="font-weight: 700;">Sources/credits</span><br/>
+            <ul>
+                <li>Annual rainfall averages: <a href="http://data.worldbank.org/indicator/AG.LND.PRCP.MM">World Bank</a></li> 
+                <li>Cover ostrich photo: <a href="https://pixabay.com/en/ostrich-south-africa-watering-place-629024/">Pixabay</a></li>
+                <li>Theewaterskloof dam photos: Greg Gordon</li>
+                <li>Dam levels, draingage areas: <a href="http://www.dwa.gov.za/hydrology/Weekly/Province.aspx">South African Department of Water and Santation</a></li>
+                <li>Water level gauges: Based on <a href="http://bl.ocks.org/brattonc/5e5ce9beee483220e2f6">Curtis Bratton's work</a></li> 
+
+        </p>
+    
+      
+    
+    </div>
+    
+    
+    <div class="content-box-trans trans1"></div>
+   
+ 
    
    
     </div> <!-- Maincontainer end -->
@@ -360,7 +405,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
 
         d3.csv("data/dam_levels_national.csv", function (stats) {
                 
-                console.log(stats);
+            
                 
 //           
 
@@ -513,9 +558,14 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     
     var margin = { top: 30, right: 0, bottom: 30, left: 5}
 
-    var width = window.innerWidth;
+    if(window.innerWidth < 500) { 
+        
+        var width = window.innerWidth - 5;
+    }
+       else { width = window.innerWidth- 100;
+            }
     
-    console.log(width);
+   
     
     if(width > 800) width = 800;
     
@@ -523,8 +573,14 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     
    
     var height = window.innerHeight * 0.6;
-    var height = width * 0.4;   
-    console.log(height);
+    if(window.innerWidth < window.innerHeight){ 
+        var height = width * 0.6; 
+    }
+    else  {
+        var height = width * 0.4; 
+        
+    }
+  
     
 
     
@@ -562,12 +618,12 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
         })
         
         var sarain = rainfall.filter( function (d) { return d.country_code === "za"; })
-        console.log(sarain);
+        
         var rain_top = rainfall.slice(0, 20);
         rain_top[20] = sarain[0];
         var rain_bottom = rainfall.slice(Math.max(rainfall.length - 20, 1));
         rain_bottom[20] = sarain[0];
-        console.log(rain_top);
+       
         
         yrain.domain(rainfall.map(function(d) { return d.country; }));
         xrain.domain([0, d3.max(rainfall, function(d) { return d.rain; })]);
@@ -621,9 +677,9 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     .attr("x", function () { 
         var w = d3.select(".world").attr("width");
          
-       console.log(w);
+    
        w = +w + 10;
-       console.log(w);
+     
        return w;
     })
     .attr("y", function () { 
@@ -641,9 +697,9 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     .attr("x", function () { 
         var sa = d3.select(".za").attr("width");
          
-       console.log(sa);
+  
        sa = +sa + 10;
-       console.log(sa);
+  
        return sa;
     })
     .attr("y", function () { 
@@ -696,9 +752,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
       var annotation = dams_svg.append("g"); 
       
         
-//        var tooltip = dams_svg.append("div")
-//            .attr("class", "tooltip")
-//      
+    
       
       function main(error, dams, provinces, dams_by_size, dams_by_alpha) { 
             
@@ -738,8 +792,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
                     xoffset = 15;
           
           
-          console.log(colcount);
-          console.log(rowcount);
+          
           
           dams_svg.attr("height", function () { 
               return rowcount * (radius * 4 + (circlemargin * 2)) + yoffset;  
@@ -749,7 +802,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
             
             // GET DAMS1 HEIGHT
             var damheight = $(".dams1").height();
-//            console.log("damheight: " + damheight);
+
         
           
               d3.select("#dams")
@@ -772,7 +825,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
                     d.Dam = (d.Dam).replace("Dam","");
                     })
                 
-//                console.log(dams_alpha_no_total.length);
+
                 
                 var dams = dams_svg.append("g")
                     
@@ -809,7 +862,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
                         .attr("r", radius)
                     .attr("class", "droplet")
                         .style("fill", "#eee")
-//                    .style("opacity", 0.8)
+
                         .style("stroke", "#a5a5a5")
                         .style("stroke-width", 1)
                         
@@ -866,7 +919,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
                     .data(damsNoTotal)
                     .on("mouseover", function (d) { 
                      
-                        console.log(d); 
+                    
                      
                         var tip = "<div style='font-weight: 700; text-transform:uppercase;'>" + d.Province + "<br/><span style='text-transform:none;'>" + d.Dam + "</span></div>";
                         
@@ -1006,15 +1059,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
                         return colors[d.Province_Index];
                     })
                     .style("opacity", 1)
-//                    .style("opacity", function (d) { 
-//                        console.log(d);
-//                        if(d.rowc == 0 && d.xpos < 10) { 
-//                            return 1;
-//                        }
-//                        else { 
-//                            return 0.3;
-//                        }
-//                    })
+
                     
                 
                 
@@ -1040,7 +1085,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
                 d3.selectAll(".droplet").transition()
                     .duration(1000)
                     .style("opacity", function (d) { 
-//                        console.log(d);
+
                         if(d.rowc == 0 && d.xpos < 10) { 
                             return 1;
                         }
@@ -1124,7 +1169,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
       
       var width = $("#keydams").width() ; 
       
-      console.log(width);
+  
    
         
         d3.csv("data/fiftypercent.csv", function (topten) { 
@@ -1337,10 +1382,10 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
             
             var layer = e.target;
             
-            console.log(e.target.feature.properties);
+          
             var drainage = e.target.feature.properties.region;
             lastDrainage = drainage;
-            console.log("lastDrainage: " + lastDrainage);
+   
             
 //            d3.select("#feature-" + drainage).style("fill","dodgerblue");
             
@@ -1374,8 +1419,8 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
         function onEachFeature(feature, layer) {
             layer.on({
                 mouseover: highlightFeature,
-                mouseout: resetHighlight,
-//                click: highlightFeature
+//                mouseout: resetHighlight,
+                click: highlightFeature
 //                mousemove: tooltipMove
             });
         }
@@ -1488,7 +1533,7 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
                 var col = "yellow";
             }
 			return L.circleMarker(latlng, {
-				radius: 6,
+				radius: 10,
 				fillColor: col,
 				color: "gray",
 				weight: 1,
@@ -1512,8 +1557,8 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
     
     
     
-    <!-- OLDEST DAMS -->
-<!--
+    <!-- WC DAMS -->
+    
     <script>
         
         var oldest = 136; 
@@ -1523,15 +1568,15 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
         
         if(mapwidth < 400) { 
             var mapheight = mapwidth * 0.6; 
-            var zoom = 4;
+            var zoom = 9;
         }
         else if(mapwidth < 800) { 
-            var mapheight = mapwidth * 0.6; 
-            var zoom = 6;
+            var mapheight = mapwidth * 0.5; 
+            var zoom = 8;
         }
         else { 
-            var mapheight = mapwidth * 0.45;
-            var zoom = 5;
+            var mapheight = mapwidth * 0.5;
+            var zoom = 9;
         }
         
         $("#map2").height(mapheight);
@@ -1544,13 +1589,15 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
             
             var layer = e.target;
             
-            console.log(e.target.feature.properties);
+     
             var drainage = e.target.feature.properties.region;
-            d3.select("#feature-" + drainage).style("fill","dodgerblue");
+//            d3.select("#feature-" + drainage).style("fill","dodgerblue");
             
             var popupContent = "<div class='popup'><div class='popuptitle'>" + e.target.feature.properties.dam + "</div>";
-            popupContent += "Year completed: " + e.target.feature.properties.year_completed;
-            popupContent += "<br />" + e.target.feature.properties.age + " years old";
+            popupContent += "Full capacity: " + e.target.feature.properties.fsc  + " million cubic meters<br />";
+            popupContent += "This week: <span class='bold'>" + e.target.feature.properties.this_week + "%</span> <br/>";
+            popupContent += "Last week: <span class='bold'>" + e.target.feature.properties.last_week + "%</span> <br />";
+            popupContent += "Last year: <span class='bold'>" + e.target.feature.properties.last_year + "%</span> <br />";
             popupContent += "</div>";
 
             
@@ -1571,53 +1618,61 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
             
         function onEachFeature(feature, layer) {
             layer.on({
-//                mouseover: highlightFeature,
+                mouseover: highlightFeature,
 //                mouseout: resetHighlight,
                 click: highlightFeature
 //                mousemove: tooltipMove
             });
         }
     
+    // 
     
-    
-    var mymap2 = L.map('map2').setView([-28.7350938,25.3868996], zoom);
+    var mymap2 = L.map('map2').setView([-33.79807,19.226820], zoom);
         
 
   L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 }).addTo(mymap2);
 
-//        L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/light-v9/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
-//        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-//        maxZoom: 20,
-//        id: 'alastairotter.07i8pfkj',
-//        accessToken: 'pk.eyJ1IjoiYWxhc3RhaXJvdHRlciIsImEiOiJjaWc1NjM1dGYwYXV6djJtNjc5dGNqZThrIn0.SWLrLlYJWBdLvyIURec3FA'
-//
-//        }).addTo(mymap2);
+
         
         mymap2.scrollWheelZoom.disable();
     
-    // ADD DRAINAGE AREAS
-//        
-//    var geoJsonLayer = L.geoJson(drainage, {
-//        style: function (feature) {
-//            return { 
-//                weight: 1,
-//                fillOpacity: 0.5,
-//                fillColor:"none",
-//                color:"none"
-//                
-//            }
-//        }
-//        
-//    }).addTo(mymap);
-//        
-//        geoJsonLayer.eachLayer(function (layer) {
-//    layer._path.id = 'feature-' + layer.feature.properties.id;
-//});
+// ADD DRAINAGE AREAS
+        var geoJsonLayer = L.geoJson(wcdrainage, {
         
+        
+        style: function (feature) {
+            
+            if(feature.properties.id === "H") { 
+                var col = "crimson";
+            }
+            else if(feature.properties.id === "G") { 
+                var col = "dodgerblue";
+            }
+           
+            
+            else { 
+                var col = "none";
+            }
+            return { 
+                weight: 1,
+                fillOpacity: 0.3,
+                fillColor: col,
+                color:"none"
+                
+            }
+        }
+        
+    }).addTo(mymap2);
+        
+        geoJsonLayer.eachLayer(function (layer) {
+    layer._path.id = 'feature-' + layer.feature.properties.id;
+});
+        
+// ADD DRAINAGE AREAS
     
-    L.geoJson(damAges, {
+    L.geoJson(wcdams, {
 
 		style: function (feature) {
 			return feature.properties && feature.properties.style;
@@ -1628,12 +1683,20 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
 		pointToLayer: function (feature, latlng) {
             var col = Math.round((feature.properties.age/136)*10); 
             
+            if(feature.properties.region==="H") { 
+                var col = "crimson";
+            }
+            else if(feature.properties.region === "G") {
+                    var col = "dodgerblue";
+                
+            }
+            
 			return L.circleMarker(latlng, {
-				radius:5,
-				fillColor: ageColors[col],
-				color: "#000",
+				radius:8,
+				fillColor: col,
+				color: "#fff",
                 stroke: 5,
-				weight: 1,
+				weight: 2,
 				opacity: 1,
 				fillOpacity: 1,
                 class: "damPoint"
@@ -1648,13 +1711,22 @@ One of the features of the 2016/2017 drought, particularly in the centre and the
                  
         
     </script>
+    
+<!--
+<script>
+    
+    $(window).scroll(function(i){
+        var scrollVar = $(window).scrollTop();
+        $('.info-pane').css({'opacity':( 200-scrollVar)/200});
+        $('.info').css({'opacity':( -200-scrollVar)/200});
+//        $('.info-pane-share').css({'opacity':( 200-scrollVar)/200});
+    });
+    
+</script>  
 -->
-    <!-- END OLDEST DAMS -->
     
     
     
-    
-    
-
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4d708b425b845fd3"></script>
 </body>
 </html>
