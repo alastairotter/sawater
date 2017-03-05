@@ -8,16 +8,18 @@
          }
          
           .tooltip { 
-        background: #474747;
-        color: #fff;
-        border: solid 1px #eee;
+        background: #fff;
+        color: #000;
+        border: solid 1px gray;
         border-radius: 5px;
         min-width: 100px;
         padding: 10px;
-        font-size: 70%;
+        font-size: 80%;
         position: absolute; 
         z-index: 200;
         visibility: hidden;
+              opacity: 0.9;
+              line-height: 140%;
         
     }
 

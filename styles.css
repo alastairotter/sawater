@@ -1,6 +1,8 @@
 html { 
     height: 100%;
+    background: dodgerblue;
   background: url(ostrich.jpg) no-repeat center center; 
+/*    background: url(ostrich.jpg) 0 0 / cover; */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -62,6 +64,8 @@ a {
     bottom: none;
     z-index: 200;
     height: 20px;
+    background: none;
+/*    display: none;*/
     
 }
 
@@ -97,6 +101,7 @@ a {
     text-shadow: 2px 2px 14px rgba(0, 0, 0, 0.8);
     font-family: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
     font-weight: 900;
+/*    background: url(ostrich.jpg) no-repeat center center; */
     
     
 }
@@ -188,11 +193,12 @@ a {
 }
 
 .content-title.small { 
-    background: #eee;
+    
     color: #000;
-    padding: 5px;
+    padding-bottom: 7px;
     font-size: 100%;
-    font-weight: normal;
+    font-weight: 700;
+    font-family: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .gauges { 
@@ -252,12 +258,55 @@ a {
     display: none;
 }
 
+.tooltip2 {
+    position: absolute; 
+    top: 100px; 
+    left: 100px;
+    background: #fff;
+    padding:5px 10px;
+    opacity: 0.8;
+    color: #000;
+    z-index: 400;
+    font-size: 70%;
+    border-radius: 5px;
+    border: solid 1px gray;
+    display: none;
+    
+}
+
+.bar:hover { 
+    fill: dodgerblue;
+    stroke: dodgerblue;
+}
+
+.splash { 
+    position: fixed; 
+    top: 10%;
+    background: #000;
+    opacity: 0.9; 
+    color: #fff;
+    z-index: 400;
+    padding: 5%;
+    width: 80%;
+    text-align: center;
+   left: 5%;
+    
+        display: none;
+    line-height: 140%;
+    font-size: 90%;
+}
+
+.check { 
+    margin-top: 10px;
+    font-size: 250%;
+}
+
 
 /* Tablet */
 
 @media screen and (min-width: 600px) { 
     html { 
-      background: url(ostrich.jpg) no-repeat center center fixed;   
+/*      background: url(ostrich.jpg) no-repeat center center fixed;   */
         
     }
     
@@ -286,11 +335,21 @@ a {
     
     .info-pane { 
         font-size:100%;
-        opacity: 0.7;
+/*        opacity: 0.7;*/
     }
     
     .info-pane:hover { 
         opacity: 1;
+    }
+    
+    .main-title { 
+        font-size: 300%;
+    }
+    
+    .mainblurb {
+        
+        bottom: 200px;
+        font-size: 180%;
     }
 
 }
@@ -299,7 +358,7 @@ a {
 
 
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 800px) {
    .main-title {
         margin-top: 3%;
         padding: 3% 20% 10% 20%;
@@ -316,6 +375,7 @@ a {
         width: 50%;
 
         margin-left: 25%;
+        bottom: 120px;
     
     }
     
