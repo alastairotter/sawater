@@ -98,7 +98,7 @@
    <p>One of the major causes of the extreme droughts over the past few years has been the impact of El Niño, a weather phenomenon in which the water surface temperature in the eastern pacific is warmer than usual, causing warmer, drier temperatures in South Africa. </p>
    <p>El Niño is a cyclical weather phenomenon and so will eventually make way for La Niña, with the opposite effect of El Niño. And while that will bring some relief for the country, it doesn't change the fact that South Africa is a water-scarce country which is extremely vulnerable to climate events. </p>
    
-   <p style="font-style: italic;">This is part one of a planned series on South Africa's water supply management and strategy. Here we will look at the country's water infrastructure and some of the affects of the recent drought.  </p>
+   <p style="font-style: italic;">This is part one of a planned series on South Africa's water supply management and strategy. Here we will look at the country's water infrastructure and some of the effects of the recent drought.  </p>
    
    <div class="content-title">Planning for scarcity</div>
    
@@ -116,7 +116,7 @@
 <div class="content-box">
 <!--    <div class="content-title">Saving For Lean Times</div>-->
     <p>Receiving so little rain South Africa is heavily reliant on its ability to capture and store water for leaner times. It does this by maintaining a network of storage dams and reservoirs across the county. The Department of Water and Sanitation manages a total of 210 dams that make up the backbone of the country's water management strategy.</p>
-    <p>The majority of these dams are located in the Eastern and Western Cape but it is the larger dams in provinces such as the Free state that play the biggest role in managing the water risk the country faces.
+    <p>The majority of these dams are located in the Eastern and Western Cape but it is the larger dams in provinces such as the Free State that play the biggest role in managing the water risk the country faces.
     </p>
     <p>In the chart below each circle represents one of these 210 dams.  </p> 
     
@@ -387,6 +387,8 @@ One of the features of the recent drought, particularly in the centre and the no
             <span style="font-weight: 700;">Comments, thoughts, suggestions?</span><br/>
             The data for this piece was collected from various sources (see below). The interpretation of that data is entirely mine. Therefore, any errors or ommissions are mine. If you have a suggestion or a comment please let me know via <b><a href="mailto:alastair@mediahack.co.za">email</a></b> or via <b><a href="http://twitter.com/alastairotter">Twitter</a></b>.
         </p>
+        
+        <p><span style="font-weight: 700;">Mobile users:</span> If you're viewing this on a mobile device some of the interactive charts may not work exactly as expected. I have tried to make this compatible with as wide a range of devices as possible but some issues may still surface. Apologies for that.</p>
         
          <p>
             <span style="font-weight: 700;">Sources/credits</span><br/>
@@ -1628,8 +1630,8 @@ One of the features of the recent drought, particularly in the centre and the no
             
             var popupContent = "<div class='popup'><div class='popuptitle'>" + e.target.feature.properties.dam + "</div>";
             popupContent += "Full capacity: " + e.target.feature.properties.fsc  + " million cubic meters<br />";
-            popupContent += "This week: <span class='bold'>" + e.target.feature.properties.this_week + "%</span> <br/>";
-            popupContent += "Last week: <span class='bold'>" + e.target.feature.properties.last_week + "%</span> <br />";
+            popupContent += "27 Feb 2017: <span class='bold'>" + e.target.feature.properties.this_week + "%</span> <br/>";
+//            popupContent += "Last week: <span class='bold'>" + e.target.feature.properties.last_week + "%</span> <br />";
             popupContent += "Last year: <span class='bold'>" + e.target.feature.properties.last_year + "%</span> <br />";
             popupContent += "</div>";
 
@@ -1746,38 +1748,38 @@ One of the features of the recent drought, particularly in the centre and the no
     </script>
     
     <script>
-    var cookie = document.getCookie("sawater");
-        console.log(cookie);
-        if(cookie === "true") {
-//            document.setCookie('sawater', 'false');
-            
-        }
-        else { 
+//    var cookie = document.getCookie("sawater");
+//        console.log(cookie);
+//        if(cookie === "true") {
+////            document.setCookie('sawater', 'false');
+//            
+//        }
+//        else { 
+////            document.setCookie("sawater", "true");
+//        }
+//        
+//        $(".check").click( function () { 
+//            $(".splash").css("display", "none");
 //            document.setCookie("sawater", "true");
-        }
-        
-        $(".check").click( function () { 
-            $(".splash").css("display", "none");
-            document.setCookie("sawater", "true");
-        })
+//        })
     
     </script>
     
     
     
     <script>
-        $("document").ready( function () { 
-        
-        
-            if(cookie !== "true" && window.innerWidth < 800) {
-            
-                $(".splash").css("display","block")
-            
-            }
-
-
-            
-        });
+//        $("document").ready( function () { 
+//        
+//        
+//            if(cookie !== "true" && window.innerWidth < 800) {
+//            
+//                $(".splash").css("display","block")
+//            
+//            }
+//
+//
+//            
+//        });
     </script>
     
 <!--
