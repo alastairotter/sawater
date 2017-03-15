@@ -1,0 +1,367 @@
+
+
+body {
+    font-family: "Libre Franklin", arial, sans-serif, helvetica;
+    font-size: 16px;
+    line-height: 20px;
+    color: #545454;
+    margin: 0;
+    background: #eee;
+    
+}
+
+a {
+   color: #545454;
+    text-decoration: underline;
+}
+
+.info-pane { 
+    position: absolute; 
+    bottom: 50px;
+    width: 100%;
+    font-size: 90%;
+    background: none;
+    text-align: center;
+    color:#fff;
+ 
+    font-weight: 100;
+    font-family: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-shadow: 2px 2px 14px rgba(0, 0, 0, 0.8);
+  
+    
+    
+}
+
+.info-pane a { 
+    color: #fff;
+    text-decoration: none;
+
+}
+
+
+.info-pane .bold { 
+    font-weight: 400;
+}
+
+
+
+.info-pane-share {
+    position: fixed; 
+    top: 30px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    opacity: 1;
+    bottom: none;
+    z-index: 200;
+    height: 20px;
+    background: none;
+/*    display: none;*/
+    
+}
+
+
+
+
+
+.screen { 
+    opacity: 0.5;
+    font-size: 80%;
+    
+    z-index: 300;
+    
+}
+
+.slider { 
+    width: 100%; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main-title { 
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-size: 180%;
+    line-height: 120%;
+    margin-top: 120px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 0% ;
+    text-shadow: 2px 2px 14px rgba(0, 0, 0, 0.8);
+    font-family: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-weight: 900;
+/*    background: url(ostrich.jpg) no-repeat center center; */
+    
+    
+}
+
+
+
+
+.mainblurb { 
+    color: #fff;
+    position: absolute; 
+    bottom: 120px;
+    
+    text-align: center;
+    font-size: 120%;
+    line-height: 100%;
+    width: 100%;
+    font-weight: 100;
+    margin-left: auto; 
+    margin-right: auto;
+/*    text-transform: uppercase; */
+    font-family: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-shadow: 2px 2px 14px rgba(0, 0, 0, 0.8);
+    font-weight: 700;
+
+   
+    
+}
+
+.blurb-part { 
+    font-weight: 400;
+    font-size: 80%;
+    line-height: 200%;
+}
+
+
+.maincontainer { 
+    width: 100%;
+/*    background: #fff;*/
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute; 
+    
+    
+}
+
+
+.content-box { 
+    height: auto;
+    font-size: 80%;
+/*    padding: 2% 5%;*/
+}
+
+.content-box-trans { 
+    width: 100%;
+    min-height: 400px;
+    
+   
+}
+
+.content-box-wide { 
+    width: 100%;
+    background: #fff;
+}
+ 
+.trans1 {
+/*    background: url(slider/images/JUL2014.jpg) no-repeat center center fixed; */
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.trans2 { 
+    background: url(flood.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.content-title { 
+    color: #000;
+    font-size: 120%;
+    text-align: center;
+    padding: 2%;
+    font-weight: bold;
+    background: #000;
+    color: #fff;
+    
+    
+}
+
+.content-title.small { 
+    
+    color: #000;
+    padding-bottom: 7px;
+    font-size: 100%;
+    font-weight: 700;
+    font-family: "Roboto", Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.gauges { 
+    position: absolute; 
+    z-index: 400;
+    
+}
+
+.gauge-holder { 
+    text-align: center;
+    
+    
+}
+
+.gauge-controls { 
+    color: gray;
+    margin-top: 50px;
+    height: 20px;
+    text-align: center;
+    width: 100%;
+    
+}
+
+
+
+
+
+
+
+
+
+
+.wcdams { 
+    display: none;
+}
+
+.topdams { 
+    display: none;
+}
+
+.tooltip2 {
+    position: absolute; 
+    top: 100px; 
+    left: 100px;
+    background: #fff;
+    padding:5px 10px;
+    opacity: 0.8;
+    color: #000;
+    z-index: 400;
+    font-size: 70%;
+    border-radius: 5px;
+    border: solid 1px gray;
+    display: none;
+    
+}
+
+.bar:hover { 
+    fill: dodgerblue;
+    stroke: dodgerblue;
+}
+
+.splash { 
+    position: fixed; 
+    top: 10%;
+    background: #000;
+    opacity: 0.9; 
+    color: #fff;
+    z-index: 400;
+    padding: 5%;
+    width: 80%;
+    text-align: center;
+   left: 5%;
+    
+        display: none;
+    line-height: 140%;
+    font-size: 90%;
+}
+
+.check { 
+    margin-top: 10px;
+    font-size: 250%;
+}
+
+
+/* Tablet */
+
+@media screen and (min-width: 600px) { 
+
+    
+    .slider { 
+        display: block;
+    }
+    
+    .static { 
+        display :none;
+    }
+    
+    .wcdams { 
+        display: block;
+    }
+    
+    .topdams { 
+        display: block;
+    }
+    
+    .wcdams-static { 
+        display: none;
+        }
+    .topdams-static { 
+        display: none;
+    }
+    
+    .info-pane { 
+        font-size:100%;
+/*        opacity: 0.7;*/
+    }
+    
+    .info-pane:hover { 
+        opacity: 1;
+    }
+    
+    .main-title { 
+        font-size: 300%;
+    }
+    
+    .mainblurb {
+        
+        bottom: 200px;
+        font-size: 180%;
+    }
+    
+    .content-title { 
+        font-size: 200%;
+    }
+
+}
+
+/* Desktop */
+
+
+
+@media screen and (min-width: 800px) {
+   .main-title {
+        margin-top: 3%;
+        padding: 3% 20% 10% 20%;
+        width: 60%;
+        font-size: 300%;
+
+    
+    }
+    
+    .mainblurb { 
+        font-size: 200%;
+        padding: 0 0%;
+        line-height: 130%;
+        width: 50%;
+
+        margin-left: 25%;
+        bottom: 120px;
+    
+    }
+    
+    .blurb-part {
+        font-size: 70%;
+        
+    }
+    
+
+    
+}
+
+    
+}

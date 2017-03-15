@@ -1,0 +1,309 @@
+<script>
+
+//window.location = "index_m.html";
+
+</script>
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,700|Slabo+27px" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700,900" rel="stylesheet">
+
+
+
+
+   
+    <link rel="stylesheet" href="styles.css">
+<!--
+    <link rel="stylesheet" href="styles_rain.css">
+    <link rel="stylesheet" href="styles_dams.css">
+    <link rel="stylesheet" href="styles_keydams.css">
+    <link rel="stylesheet" href="styles_map.css">
+-->
+<!--
+    <script src="data/top_ten_dams_json.js"></script>
+    <script src="data/alldams_ages.json"></script>
+    <script src="data/drainageareas.js"></script>
+    <script src="data/wc_dams.json"></script>
+    <script src="data/wc_drainage.js"></script>
+    <script src="data/sa.json"></script>
+-->
+    <script src="../lib/d3.v3.min.js"></script>
+    <script src="liquidFillGauge.js"></script>
+<!--    <script src="lib/queue.v1.min.js"></script>-->
+    <script src="../lib/jquery.min.js"></script>
+    <script src="console.js"></script>
+<!--    <script src="cookie.js"></script>-->
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+
+<div class="maincontainer">
+
+
+
+
+
+<div class="content-box">
+   <div class="content-title">The State of Dam Storage: November 2015 to February 2017</div>
+   
+    <div class="check">Province</div>
+    
+
+
+                
+                
+    <div class="gauge-holder">
+                
+    
+ 
+ 
+  <svg id="fillgauge1" width="30%" height="200"></svg>
+  <svg id="fillgauge2" width="30%" height="200"></svg>
+  <svg id="fillgauge3" width="30%" height="200"></svg>
+  
+  
+  <div class="gauge-controls gc-bottom">
+
+<!--
+                    <div class="National pgc2"><input class="gc" type="checkbox" id="gc" name="National" checked> National</div>
+                    <div class="Eastern Cape pgc2"><input class="gc" type="checkbox" id="gc" name="Eastern Cape"> Eastern Cape</div>
+                    <div class="Free State pgc2"><input class="gc" type="checkbox" id="gc" name="Free State"> Free State</div>
+                    <div class="Gauteng pgc2"><input class="gc" type="checkbox" id="gc" name="Gauteng"> Gauteng</div>
+                    <div class="KwaZulu-Natal pgc2"><input class="gc" type="checkbox" id="gc" name="KwaZulu-Natal"> KwaZulu-Natal</div>
+                    <div class="Limpopo pgc2"><input class="gc" type="checkbox" id="gc" name="Limpopo"> Limpopo</div>
+                    <div class="Mpumalanga pgc2"><input class="gc" type="checkbox" id="gc" name="Mpumalanga"> Mpumalanga</div>
+                    <div class="North West pgc2"><input class="gc" type="checkbox" id="gc" name="North West"> North West</div>
+                    <div class="Northern Cape pgc2"><input class="gc" type="checkbox" id="gc" name="Northern Cape"> Northern Cape</div>
+                    <div class="Western Cape pgc2"><input class="gc" type="checkbox" id="gc" name="Western Cape"> Western Cape</div>
+                    <div class="Lesotho pgc2"><input class="gc" type="checkbox" id="gc" name="Lesotho"> Lesotho</div>
+-->
+                    <a class="gcb NAT">NAT</a>
+                    <a class="gcb EC">EC</a>
+                    <a class="gcb FS">FS</a>
+                    <a class="gcb GP">GP</a>
+                    <a class="gcb KZN">KZN</a>
+                    <a class="gcb LIM">LIM</a>
+                    <a class="gcb MP">MP</a>
+                    <a class="gcb NW">NW</a>
+                    <a class="gcb NC">NC</a>
+                    <a class="gcb WC">WC</a>
+                    <a class="gcb LES">LES</a>
+                    
+                    <button class="testBut">WC</button>
+                    <div class="WC pgc2"><input class="gc" type="checkbox" id="gc" name="Western Cape"> Western Cape</div>
+
+
+                </div>
+
+</div>
+  
+ 
+   
+   
+
+
+ 
+    </div>
+    </div>
+    
+    
+    
+<script> 
+      
+
+        d3.csv("dam_levels_national.csv", function (stats) {
+                
+
+        var provinces = ['National','Gauteng','Free State','Western Cape','Eastern Cape','North West','Limpopo','Northern Cape','KwaZulu-Natal','Mpumalanga','Lesotho'];
+        var provcode = ['NAT','GP','FS','WC','EC','NW','LIM','NC','KZN', 'LES', 'MP'];
+
+        function round(value, precision) {
+            var multiplier = Math.pow(10, precision || 0);
+            return Math.round(value * multiplier) / multiplier;
+        }
+
+        stats.forEach( function (d) {
+            d.this_week = +round(d.this_week,1);
+            d.last_week = +round(d.last_week,1);
+            d.last_year = +round(d.last_year,1);
+        })
+
+
+        if(window.innerWidth < 400) { 
+            var windowWidth = window.innerWidth,
+                windowHeight = window.innerHeight,
+                gaugeWidth = 130,
+                gaugeHeight = 130,
+                gaugePadding = 5,
+                center = windowWidth / 2;
+        }
+        else { 
+            var windowWidth = window.innerWidth,
+                windowHeight = window.innerHeight,
+                gaugeWidth = 200,
+                gaugeHeight = 200,
+                gaugePadding = 10,
+                center = windowWidth / 1.5;
+        
+        }
+//
+        var svg = d3.select("#fillgauge1")
+            .attr("height", gaugeHeight + 60)
+            .attr("width", gaugeWidth)
+            .style("padding-left","20px")
+            .style("padding-right","20px")
+
+        var svg = d3.select("#fillgauge2")
+            .attr("height", gaugeHeight + 60)
+            .attr("width", gaugeWidth)
+            .style("padding-left","20px")
+            .style("padding-right","20px")
+        
+        
+        var svg = d3.select("#fillgauge3")
+            .attr("height", gaugeHeight + 60)
+            .attr("width", gaugeWidth)
+            .style("padding-left","20px")
+            .style("padding-right","20px")
+
+        // DEFINE GUAGES
+        var config4 = liquidFillGaugeDefaultSettings();
+        config4.circleThickness = 0.05;
+        config4.circleColor = "#64a2db";
+        config4.textColor = "#545454";
+        config4.waveTextColor = "#fff";
+        config4.waveColor = "#64a2db";
+        config4.textVertPosition = 0.2;
+        config4.waveAnimateTime = 2000;
+        config4.waveHeight = 0.05;
+        config4.waveAnimate = true;
+        config4.waveRise = true;
+        config4.waveHeightScaling = true;
+        config4.waveOffset = 0.25;
+        config4.textSize = 0.45;
+        config4.waveCount = 2;
+        var gauge1 = loadLiquidFillGauge("fillgauge1", stats[10].last_year, config4);
+
+         var config4 = liquidFillGaugeDefaultSettings();
+        config4.circleThickness = 0.05;
+        config4.circleColor = "#64a2db";
+        config4.textColor = "#545454";
+        config4.waveTextColor = "#fff";
+        config4.waveColor = "#64a2db";
+        config4.textVertPosition = 0.2;
+        config4.waveAnimateTime = 2000;
+        config4.waveHeight = 0.05;
+        config4.waveAnimate = true;
+        config4.waveRise = true;
+        config4.waveHeightScaling = true;
+        config4.waveOffset = 0.25;
+        config4.textSize = 0.45;
+        config4.waveCount = 2;
+        var gauge2 = loadLiquidFillGauge("fillgauge2", stats[10].this_week, config4);
+            
+        
+         var config4 = liquidFillGaugeDefaultSettings();
+        config4.circleThickness = 0.05;
+        config4.circleColor = "#64a2db";
+        config4.textColor = "#545454";
+        config4.waveTextColor = "#fff";
+        config4.waveColor = "#64a2db";
+        config4.textVertPosition = 0.2;
+        config4.waveAnimateTime = 2000;
+        config4.waveHeight = 0.05;
+        config4.waveAnimate = true;
+        config4.waveRise = true;
+        config4.waveHeightScaling = true;
+        config4.waveOffset = 0.25;
+        config4.textSize = 0.45;
+        config4.waveCount = 2;
+        var gauge3 = loadLiquidFillGauge("fillgauge3", stats[10].feb, config4);
+
+        //ADD GAUGE LABELS
+
+        var g1 = d3.select("#fillgauge1").append("text").text("Last Year");
+        var g2 = d3.select("#fillgauge2").append("text").text( function () { return "Last Week"; });
+        var g3 = d3.select("#fillgauge3").append("text").text( function () { return "This Week"; });
+
+        g1.style("stroke","#545454").style("stroke-width","1").attr("class","labels").attr("y", gaugeHeight + 50).attr("x", gaugeWidth/2).style("text-anchor","middle")
+        g2.style("stroke","#545454").style("stroke-width","1").attr("class","labels").attr("y", gaugeHeight + 50).attr("x", gaugeWidth/2).style("text-anchor","middle")
+        g3.style("stroke","#545454").style("stroke-width","1").attr("class","labels").attr("y", gaugeHeight + 50).attr("x", gaugeWidth/2).style("text-anchor","middle")
+        
+        
+        
+        // GAUGE CONTROLS
+//        provinces.forEach( function (d) {
+//            d3.selectAll("[name='" + d +"']").on("change", function () {
+//
+//                d3.selectAll(".gc").property('checked', false);
+//                d3.select(this).property('checked',true);
+//                  d3.selectAll(".pgc").style("font-weight", "normal")
+//                d3.select("[class='" + d + " pgc']").style("font-weight","700")
+//                var curStats = stats.filter( function (dd) {
+//                    return dd.province === d;
+//                })
+//
+//            gauge1.update(curStats[0].last_year);
+//            gauge2.update(curStats[0].this_week);
+//            gauge3.update(curStats[0].feb);
+//            })
+//        })
+        
+        
+        // links
+        
+        provcode.forEach( function (d) { 
+            d3.selectAll("." + d).on("click", function () { 
+                d3.select(".check").text(d);
+                
+                var curStats = stats.filter( function (dd) {
+                    return dd.code === d;
+                })
+
+            gauge1.update(curStats[0].last_year);
+            gauge2.update(curStats[0].this_week);
+            gauge3.update(curStats[0].feb);
+                
+                
+                
+            })
+        })
+        
+        d3.select(".testBut").on("click", function () { 
+            console.log("button");
+            
+             var curStats = stats.filter( function (dd) {
+                    return dd.code === "WC";
+                })
+
+            gauge1.update(curStats[0].last_year);
+            gauge2.update(curStats[0].this_week);
+            gauge3.update(curStats[0].feb);
+            
+        })
+
+        
+            });
+
+   
+    </script>
+    
+    
+   
+</body>
+</html>
